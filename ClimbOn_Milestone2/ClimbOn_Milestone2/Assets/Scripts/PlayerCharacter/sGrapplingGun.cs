@@ -95,15 +95,18 @@ public class sGrapplingGun : MonoBehaviour
     public void GrappleRetract()
     {
 
+
         if (joint)
         {
 
-            // SMOOTH MOVES PLAYER TO GRAPPLE POINT
-            player.transform.position = Vector3.Lerp(player.transform.position,
-                                                   grapplingPoint,
-                                                   10f);
+            
 
-            //StartCoroutine("GrappleMove");
+            // SMOOTH MOVES PLAYER TO GRAPPLE POINT
+            //player.transform.position = Vector3.Lerp(player.transform.position,
+                                                   //grapplingPoint,
+                                                   //Time.deltaTime);
+
+            StartCoroutine("GrappleMove");
 
         }
 
@@ -125,15 +128,32 @@ public class sGrapplingGun : MonoBehaviour
     IEnumerator GrappleMove()
     {
 
+        int grappleCounter = 0;
+        int grappleTime = 200;
+        float grappleSpeed = 30f;
 
-            player.transform.position = Vector3.Lerp(player.transform.position,
-                                                    grapplingPoint,
-                                                    10f);
+        Debug.Log("Grapple Move!");
+
+            while (grappleCounter < grappleTime)
+            {
 
 
-            yield return new WaitForSeconds(1);
-        
-        
+            if (joint)
+            {
+                //player.transform.position = Vector3.Lerp(player.transform.position,
+                                                   //grapplingPoint,
+                                                   //Time.deltaTime * grappleSpeed);
+
+                player.transform.position = Vector3.MoveTowards(player.transform.position, grapplingPoint, Time.deltaTime * grappleSpeed);
+            }
+           
+            grappleCounter++;
+
+            yield return new WaitForSeconds(0.001f);
+
+            }
+
+        yield return new WaitForSeconds(0.5f);
 
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE }
+public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE, JUMPING, QTE }
 
 public class sCharacterController : MonoBehaviour
 {
@@ -24,7 +24,7 @@ public class sCharacterController : MonoBehaviour
 
     public float sprintMultiplier = 2f;
 
-    public float speedBoostTime = 5f;
+    public float speedBoostTime = 10f;
 
     [SerializeField] float jumpForce = 5f;
     bool isJumping;
@@ -51,14 +51,11 @@ public class sCharacterController : MonoBehaviour
     [Header("Player State")]
     [SerializeField] public ePlayerControlState currentState = ePlayerControlState.WALKING;
 
-    float h = 0f;
-    float v = 0f;
-
     bool jumpDown = false;
 
     [Space]
     [Header("Falling")]
-    public float maxFallVelocity = 20f;
+    public float maxFallVelocity = -20f;
 
     Vector3 velo;
 
@@ -132,7 +129,7 @@ public class sCharacterController : MonoBehaviour
     public GameObject grappleGun;
     sGrapplingGun grappleGunBehavior;
     bool isAimingGrapple;
-    bool isRetractingGrapple = false;
+    //bool isRetractingGrapple = false;
     public bool isGrappling;
 
     public GameObject reticle;
@@ -238,6 +235,7 @@ public class sCharacterController : MonoBehaviour
         MovementHandler();
 
 
+
     }
 
     void SetAnimatorSpeed(float _speed)
@@ -259,10 +257,10 @@ public class sCharacterController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Ground"))
         {
-            if (rb.velocity.y >= maxFallVelocity)
+            if (rb.velocity.y <= maxFallVelocity)
             {
                 //PlayerDeath();
-                Debug.Log("Ground death triggered");
+                Debug.Log("Ground death triggered from " + rb.velocity.y + " velocity");
             }
         }
 
@@ -292,13 +290,19 @@ public class sCharacterController : MonoBehaviour
     void FallCheck()
     {
 
-        if (maxFallVelocity <= -10)
+      
+        // CHECKS FOR REGULAR FALLING
+        if (rb.velocity.y < -0.3 && currentState != ePlayerControlState.CLIMBING)
         {
-            Debug.Log("Fall Death!");
-            sCharacterController.isDead = true;
+
+            if (currentState != ePlayerControlState.FALLING)
+            {
+                Debug.Log("Falling Happening from " + rb.velocity.y + " velocity");
+                currentState = ePlayerControlState.FALLING;
+            }
+            
 
         }
-       
 
     }
 
@@ -337,9 +341,11 @@ public class sCharacterController : MonoBehaviour
             isOverHanging = false;
         }
 
+
         else if (currentState != ePlayerControlState.CLIMBING && !isJumping)
         {
-            currentState = ePlayerControlState.FALLING;
+            // SETS FALL State
+            //currentState = ePlayerControlState.FALLING;
         }
 
         else
@@ -366,11 +372,27 @@ public class sCharacterController : MonoBehaviour
             currentState = ePlayerControlState.OVERHANGING;
             isOverHanging = true;
 
+            float rotSpeed = 10f;
+
+            //shoulderL.transform.SetPositionAndRotation(shoulderL.transform.position, new Quaternion(0, 180, -180, 0));
+            //shoulderR.transform.SetPositionAndRotation(shoulderR.transform.position, new Quaternion(0, 180, -180, 0));
+            
+            shoulderL.transform.rotation = Quaternion.Lerp(shoulderL.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
+            shoulderR.transform.rotation = Quaternion.Lerp(shoulderR.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
 
         }
 
         else
         {
+
+            //shoulderL.transform.SetPositionAndRotation(shoulderL.transform.position, new Quaternion(0, 180, 0, 0));
+            //shoulderR.transform.SetPositionAndRotation(shoulderR.transform.position, new Quaternion(0, 180, 0, 0));
+
+            //shoulderL.transform.rotation = Quaternion.Lerp(shoulderL.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime);
+            //shoulderR.transform.rotation = Quaternion.Lerp(shoulderR.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime);
+
+
+
             //currentState = PlayerControlState.FALLING;
             isOverHanging = false;
             rb.useGravity = true;
@@ -384,6 +406,8 @@ public class sCharacterController : MonoBehaviour
         
 
         Quaternion shoulderRot;
+
+        float rotSpeed = 10f;
 
         Vector3 mantlePos;
         //FIRST CHECKS FOR A HIT AT WAIST LEVEL
@@ -424,12 +448,13 @@ public class sCharacterController : MonoBehaviour
 
                 else
                 {
-                    mantlePos = transform.localPosition + mantleOffset + Vector3.forward;
+                    mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
                     canMantle = true;
 
                     shoulderRot = new Quaternion(150, 0, 0, 0);
 
-                    
+                    shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation,shoulderRot, Time.deltaTime * rotSpeed);
+                    shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
 
                     // CHECKS FOR MANTLE INPUT HERE
                     if (attempingMantle)
@@ -447,10 +472,12 @@ public class sCharacterController : MonoBehaviour
                 //mantlePos = Vector3.forward + Vector3.up;
 
                 shoulderRot = new Quaternion(190, 0, 0, 0);
-                shoulderL.transform.rotation = shoulderRot;
-                shoulderL.transform.rotation = shoulderRot;
 
-                mantlePos = transform.localPosition + Vector3.up + Vector3.forward;
+                shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+                shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+
+
+                mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
 
                 if (attempingMantle)
                 {
@@ -484,9 +511,9 @@ public class sCharacterController : MonoBehaviour
 
     void MantleMove(Vector3 _spotToMove)
     {
-        Vector3 offset = new Vector3(0, 2f, 0);
+        Vector3 offset = new Vector3(0, 1.5f, 0);
         Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
-        transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, 100f * Time.fixedDeltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
 
     }
 
@@ -537,12 +564,22 @@ public class sCharacterController : MonoBehaviour
                     OverHangMovement(walkDirection);
                     break;
                 }
+            case ePlayerControlState.JUMPING:
+                {
+
+                    JumpMovement(walkDirection);
+                    break;
+                }
+           
         }
 
         GroundCheck();
         CeilingCheck();
         
-
+        if (isHoldingUmbrella)
+        {
+            UmbrellaFly();
+        }
 
         //rb.useGravity = currentState != PlayerControlState.CLIMBING;
 
@@ -553,6 +590,8 @@ public class sCharacterController : MonoBehaviour
 
     void ClimbingMovement(Vector2 _input)
     {
+
+        isJumping = false;
 
         float totalClimbSpeed = climbSpeed;
 
@@ -684,7 +723,7 @@ public class sCharacterController : MonoBehaviour
                             out hit)) // HIT DATA
         {
 
-            Debug.DrawRay(gameObject.transform.position, Vector3.up, Color.blue);
+            Debug.DrawRay(transform.position, Vector3.up, Color.blue);
 
             //float dot = Vector3.Dot(transform.forward, -hit.normal);
 
@@ -809,12 +848,25 @@ public class sCharacterController : MonoBehaviour
         }
     }
 
+    void JumpMovement(Vector3 _moveDirection)
+    {
+
+        if (_moveDirection.sqrMagnitude > 0.01f)
+        {
+
+            transform.forward = _moveDirection * walkSpeed;
+
+        }
+
+    }
+
     void FallingMovement(Vector3 _moveDirection)
     {
         Debug.Log("Falling happening");
 
+        animController.SetBool("isClimbing", false);
         animController.SetBool("isFalling", true);
-
+        
        
 
         if (_moveDirection.sqrMagnitude > 0.01f)
@@ -827,6 +879,9 @@ public class sCharacterController : MonoBehaviour
         if (jumpDown && Physics.Raycast(transform.position,
                                         transform.forward*0.8f))
         {
+
+            Debug.DrawRay(transform.position, transform.forward * 0.8f, Color.white);
+
             currentState = ePlayerControlState.CLIMBING;
             animController.SetBool("isClimbing", true);
         }
@@ -843,9 +898,6 @@ public class sCharacterController : MonoBehaviour
     void Jump(InputAction.CallbackContext _context)  // JUMP ACTION.  FEET HAVE OTHER SCRIPT TO CHECK FOR GROUND COLLISION
     {
 
-        Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
-        Vector3 movement = new Vector3(input.x, input.y, 0);
-
         if (!jumpDown)
         {
             Debug.Log("Jump");
@@ -855,20 +907,25 @@ public class sCharacterController : MonoBehaviour
                 // WALL JUMP
                 if (currentState == ePlayerControlState.CLIMBING)
                 {
+                    Debug.Log("Climbing Jump");
                     isJumping = true;
-                    rb.AddForce(new Vector3(jumpForce, jumpForce, 0), ForceMode.Impulse);
+                    rb.useGravity = true;
+                    currentState = ePlayerControlState.JUMPING;
+                    rb.AddForce(new Vector3(0, jumpForce, -jumpForce*2), ForceMode.Impulse);
                 }
 
                 //REGULAR WALK JUMP
                 else if (currentState == ePlayerControlState.WALKING)
                 {
+                    Debug.Log("Walking Jump");
                     isJumping = true;
+                    rb.useGravity = true;
+                    currentState = ePlayerControlState.JUMPING;
                     rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
                 }
 
                 maxFallVelocity = 0;
 
-                //StartCoroutine("JumpMovement");
 
             }        
 
@@ -876,18 +933,6 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-
-    public void GrapplePull()
-    {
-
-        if (isGrappling)
-        {
-
-            grappleGun.GetComponent<sGrapplingGun>().GrappleRetract();
-
-        }
-
-    }
 
     // NEESD IMPLEMENTATION
     private bool isFacingWall()
@@ -975,6 +1020,7 @@ public class sCharacterController : MonoBehaviour
         if (isGrappling == false)
         {
 
+            animController.SetBool("isFalling", false);
 
             grappleGunBehavior.StartGrapple();
             
@@ -990,6 +1036,20 @@ public class sCharacterController : MonoBehaviour
 
         }
        
+
+    }
+
+
+
+    public void GrapplePull()
+    {
+
+        if (isGrappling)
+        {
+            isJumping = false;
+            grappleGun.GetComponent<sGrapplingGun>().GrappleRetract();
+
+        }
 
     }
 
@@ -1042,22 +1102,30 @@ public class sCharacterController : MonoBehaviour
             {
 
                 umbrella.SetActive(true);
-                Physics.gravity = normalGravity + umbrellaGravityReductionForce;
+
+                animController.SetBool("isFalling", false);
+
 
             }
            
-
         }
 
         else
         {
 
             umbrella.SetActive(false);
-            Physics.gravity = normalGravity;
+
+
         }
 
     }
 
+    void UmbrellaFly()
+    {
+
+        rb.velocity = -normalGravity + umbrellaGravityReductionForce * Time.fixedDeltaTime;
+
+    }
 
 
     void CameraUpdate()

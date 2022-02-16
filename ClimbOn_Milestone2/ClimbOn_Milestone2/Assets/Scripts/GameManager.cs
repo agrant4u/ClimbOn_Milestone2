@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [Header("Scene Management")]
     int currentScene;
     public eScene curScene;
-    int startScene = 0;
+    //int startScene = 0;
 
 
 
