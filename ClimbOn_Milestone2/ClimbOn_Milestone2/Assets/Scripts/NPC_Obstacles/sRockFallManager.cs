@@ -9,42 +9,58 @@ public class sRockFallManager : MonoBehaviour
 
     Transform rockSpawnLocation;
 
-    public int minRocksToSpawn;
-    public int maxRocksToSpawn;
+    int maxNumberOfRocks = 10;
 
-    int randomSpawnAmount;
+    float minSpawnInterval = 0.2f;
+    float maxSpawnInterval = 1.5f;
 
-    public float spawnStartTime = 1f;
-    public float spawnTime = 1f;
+    float minSpawnTime = 1.5f;
+    float maxSpawnTime = 4f;
 
-    float currentSpawnTimer;
-    float currentSpawnInterval;
+    float minRocksToSpawn = 1f;
+    float maxRocksToSpawn = 10f;
 
-    public float minSpawnInterval = 50f;
-    public float maxSpawnInterval = 500f;
+    List<GameObject> rockList;
 
     private void Start()
     {
         rockSpawnLocation = this.gameObject.transform;
 
-        RockSpawner();
+        //RockSpawner();
+
+
+        InvokeRepeating("RockSpawner", Random.Range(minSpawnInterval, maxSpawnInterval), Random.Range(minSpawnTime, maxSpawnTime));
     }
 
     private void Update()
     {
-     
 
-        
+        //CheckForMaxRocks();
+
     }
 
     public void RockSpawner()
     {
+        float randomNumberOfRocks = Random.Range(minRocksToSpawn, maxRocksToSpawn);
 
-        //Vector3 spawnLocation = new Vector3();
+        for (int i = 0; i < randomNumberOfRocks; i++)
+        {
+           Instantiate(pRock, rockSpawnLocation.position, Quaternion.identity);
+        }
+        
+        //InvokeRepeating("RockSpawner", Random.Range(minSpawnInterval, maxSpawnInterval), 10f);
 
-        Instantiate(pRock, rockSpawnLocation.position, Quaternion.identity);
+    }
 
-        Invoke("RockSpawner", Random.Range(minSpawnInterval, maxSpawnInterval));
+    public void CheckForMaxRocks()
+    {
+
+        if (rockList.Count == maxNumberOfRocks)
+        {
+
+                rockList.RemoveAt(0);     
+
+        }
 
     }
 

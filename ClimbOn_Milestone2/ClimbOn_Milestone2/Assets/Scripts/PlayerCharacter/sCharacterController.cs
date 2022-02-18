@@ -22,6 +22,10 @@ public class sCharacterController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5f;
     float startingWalkSpeed;
 
+    public float dashSpeed = 500f;
+    public int dashCooldownTime = 5;
+    bool isDashing;
+
     public float sprintMultiplier = 2f;
 
     public float speedBoostTime = 10f;
@@ -41,9 +45,9 @@ public class sCharacterController : MonoBehaviour
     Vector3 cameraOffset;
     //[SerializeField] float cameraSensitivity = 5f;
     // CINEMACHINE
-    public GameObject camController;
-    CinemachineFreeLook freeLookCam;
-    public Camera cam;
+    //public GameObject camController;
+    //CinemachineFreeLook freeLookCam;
+    //public Camera cam;
 
     Rigidbody rb;
 
@@ -140,6 +144,11 @@ public class sCharacterController : MonoBehaviour
     public static int collectiblesHeld = 0;
     public static int totalCollectibles = 3;
 
+    bool canPickupRock;
+    bool holdingRock;
+    GameObject rockToPickup;
+    FixedJoint rockPickupJoint;
+
     void Awake()
     {
 
@@ -156,7 +165,7 @@ public class sCharacterController : MonoBehaviour
 
         controller = new PlayerControls();
 
-        freeLookCam = camController.GetComponent<CinemachineFreeLook>();
+        //freeLookCam = camController.GetComponent<CinemachineFreeLook>();
         // SET CAM ORBITS?
         animController = masterPlayer.GetComponent<Animator>();
         SetAnimatorSpeed(animatorSpeed);
@@ -172,8 +181,10 @@ public class sCharacterController : MonoBehaviour
         controller.Gameplay.Sprint.performed += context => Sprint();
 
         controller.Gameplay.Mantle.performed += context => attempingMantle = !attempingMantle;
-        
-     
+
+        controller.Gameplay.PickupRock.performed += context => RockPickup();
+
+        controller.Gameplay.DashRoll.performed += conext => DashRoll();
 
     }
 
@@ -196,6 +207,8 @@ public class sCharacterController : MonoBehaviour
         isGrappling = false;
         isAimingGrapple = false;
         attempingMantle = false;
+        canPickupRock = false;
+        isDashing = false;
         rb = GetComponent<Rigidbody>();
         startingWalkSpeed = walkSpeed;
         currentHitPoints = maxHitPoints;
@@ -260,8 +273,42 @@ public class sCharacterController : MonoBehaviour
             if (rb.velocity.y <= maxFallVelocity)
             {
                 //PlayerDeath();
+                //currentState = ePlayerControlState.WALKING;
                 Debug.Log("Ground death triggered from " + rb.velocity.y + " velocity");
             }
+        }
+
+        sMoveableRock movingRock;
+        movingRock = collision.gameObject.GetComponent<sMoveableRock>();
+
+        if (movingRock)
+        {
+            Debug.Log("Moving rock collison!");
+            if (!holdingRock)
+            {
+                rockToPickup = collision.gameObject;
+                canPickupRock = true;
+            }
+            
+
+        }
+        
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+
+        sMoveableRock movingRock;
+        movingRock = collision.gameObject.GetComponent<sMoveableRock>();
+
+        if (movingRock)
+        {
+
+            Debug.Log("Can't pickup rock now");
+            
+            canPickupRock = false;
+
         }
 
     }
@@ -448,16 +495,17 @@ public class sCharacterController : MonoBehaviour
 
                 else
                 {
+
                     mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
                     canMantle = true;
 
-                    shoulderRot = new Quaternion(150, 0, 0, 0);
+                    //shoulderRot = new Quaternion(150, 0, 0, 0);
 
-                    shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation,shoulderRot, Time.deltaTime * rotSpeed);
-                    shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+                    //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation,shoulderRot, Time.deltaTime * rotSpeed);
+                    //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
 
                     // CHECKS FOR MANTLE INPUT HERE
-                    if (attempingMantle)
+                    if (attempingMantle && !holdingRock && !canPickupRock)
                     {
                         Debug.Log("Mantle attempt!");
                         MantleMove(mantlePos);
@@ -471,15 +519,15 @@ public class sCharacterController : MonoBehaviour
             {
                 //mantlePos = Vector3.forward + Vector3.up;
 
-                shoulderRot = new Quaternion(190, 0, 0, 0);
+                //shoulderRot = new Quaternion(190, 0, 0, 0);
 
-                shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
-                shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+                //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+                //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
 
 
                 mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
 
-                if (attempingMantle)
+                if (attempingMantle && !holdingRock && !canPickupRock)
                 {
                     Debug.Log("Mantle attempt!");
                     MantleMove(mantlePos);
@@ -511,9 +559,12 @@ public class sCharacterController : MonoBehaviour
 
     void MantleMove(Vector3 _spotToMove)
     {
-        Vector3 offset = new Vector3(0, 1.5f, 0);
-        Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
-        transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
+
+
+            Vector3 offset = new Vector3(0, 1.5f, 0);
+            Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
+            transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
+ 
 
     }
 
@@ -526,7 +577,8 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    void MovementHandler()
+    // MAIN STATE MACHINE CONTROLLER
+    void MovementHandler() 
     {
         
         // THIS HANDLES MOVEMENT WITH LEFT STICK
@@ -848,18 +900,6 @@ public class sCharacterController : MonoBehaviour
         }
     }
 
-    void JumpMovement(Vector3 _moveDirection)
-    {
-
-        if (_moveDirection.sqrMagnitude > 0.01f)
-        {
-
-            transform.forward = _moveDirection * walkSpeed;
-
-        }
-
-    }
-
     void FallingMovement(Vector3 _moveDirection)
     {
         Debug.Log("Falling happening");
@@ -872,7 +912,7 @@ public class sCharacterController : MonoBehaviour
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
 
-            transform.forward = _moveDirection;
+            transform.forward = _moveDirection * walkSpeed;
 
         }
 
@@ -933,6 +973,68 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+    void JumpMovement(Vector3 _moveDirection)
+    {
+
+        if (_moveDirection.sqrMagnitude > 0.01f)
+        {
+
+            transform.forward = _moveDirection * walkSpeed;
+
+        }
+
+    } // LETS PLAYER MOVE WHILE JUMPING IN AIR
+
+
+    void DashRoll()
+    {
+
+        if (!isDashing)
+        {
+
+            Debug.Log("Dashing!");
+
+            isDashing = true;
+            Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
+
+            if (currentState == ePlayerControlState.CLIMBING)
+            {
+
+                rb.useGravity = true;
+
+                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new Vector3(input.x * dashSpeed, input.y * dashSpeed, 0), Time.deltaTime * 3);
+
+                rb.AddForce(new Vector3(input.x * dashSpeed, input.y * dashSpeed, 0), ForceMode.Impulse);
+                
+                StartCoroutine(DashCooldown());
+            }
+
+            else
+            {
+
+                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new Vector3(input.x * dashSpeed, 0, input.y * dashSpeed), Time.deltaTime * 3);
+                rb.AddForce(new Vector3(input.x * dashSpeed, 0, input.y * dashSpeed), ForceMode.Impulse);
+                StartCoroutine(DashCooldown());
+            }
+        }
+
+        
+
+    }
+
+    IEnumerator DashCooldown()
+    {
+        Debug.Log("Dash cooling down");
+
+        for (int i = 0; i < dashCooldownTime; i++)
+        {
+
+            yield return new WaitForSeconds(1);
+        }
+
+        Debug.Log("You can now dash again!");
+        isDashing = false;
+    }
 
     // NEESD IMPLEMENTATION
     private bool isFacingWall()
@@ -1016,26 +1118,33 @@ public class sCharacterController : MonoBehaviour
         // FLIPS THE BOOL FOR PRESS AND RELEASE.  STARTS AS FALSE SO FIRST PRESS WITLL MAKE IT TRUE.
         //isGrappling = !isGrappling;
 
-
-        if (isGrappling == false)
+        if (!holdingRock)
         {
 
-            animController.SetBool("isFalling", false);
+            if (isGrappling == false)
+            {
 
-            grappleGunBehavior.StartGrapple();
-            
-           
+                animController.SetBool("isFalling", false);
+
+                grappleGunBehavior.StartGrapple();
+
+
+            }
+
+            else
+            {
+
+
+                grappleGunBehavior.StopGrapple();
+
+
+            }
         }
-
+        
         else
         {
-
-
-            grappleGunBehavior.StopGrapple();
-            
-
+            isGrappling = false;
         }
-       
 
     }
 
@@ -1124,6 +1233,30 @@ public class sCharacterController : MonoBehaviour
     {
 
         rb.velocity = -normalGravity + umbrellaGravityReductionForce * Time.fixedDeltaTime;
+
+    }
+
+    void RockPickup()
+    {
+
+        if (holdingRock && rockPickupJoint)
+        {
+
+            Destroy(rockPickupJoint);
+            rockToPickup.GetComponent<Rigidbody>().AddForce(gameObject.transform.localPosition + Vector3.up * 500);
+            rockToPickup = null;
+            holdingRock = false;
+
+        }
+
+        if(canPickupRock)
+        {
+            rockPickupJoint = gameObject.AddComponent<FixedJoint>();
+            rockPickupJoint.connectedBody = rockToPickup.GetComponent<Rigidbody>();
+            
+            holdingRock = true;
+            
+        }
 
     }
 
