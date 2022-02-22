@@ -67,12 +67,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""LegLeft"",
+                    ""name"": ""DashRoll"",
                     ""type"": ""Button"",
                     ""id"": ""3ef4c516-9e7c-4fe1-8706-6e3e33468ee8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Movement"",
@@ -96,7 +96,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""a08db63d-26f3-4e9a-94b5-fcf820534f25"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)""
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PickupRock"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dee2432-1097-471c-9ada-88b97a1eacdd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -195,7 +203,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LegLeft"",
+                    ""action"": ""DashRoll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -206,7 +214,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LegLeft"",
+                    ""action"": ""DashRoll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -319,6 +327,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Mantle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67bc7558-dc4a-4184-b5ba-73e28e2c6b2a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickupRock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -333,10 +352,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_GrappleShoot = m_Gameplay.FindAction("GrappleShoot", throwIfNotFound: true);
         m_Gameplay_GrappleAim = m_Gameplay.FindAction("GrappleAim", throwIfNotFound: true);
         m_Gameplay_GrapplePull = m_Gameplay.FindAction("GrapplePull", throwIfNotFound: true);
-        m_Gameplay_LegLeft = m_Gameplay.FindAction("LegLeft", throwIfNotFound: true);
+        m_Gameplay_DashRoll = m_Gameplay.FindAction("DashRoll", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_Mantle = m_Gameplay.FindAction("Mantle", throwIfNotFound: true);
+        m_Gameplay_PickupRock = m_Gameplay.FindAction("PickupRock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -392,10 +412,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_GrappleShoot;
     private readonly InputAction m_Gameplay_GrappleAim;
     private readonly InputAction m_Gameplay_GrapplePull;
-    private readonly InputAction m_Gameplay_LegLeft;
+    private readonly InputAction m_Gameplay_DashRoll;
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_Mantle;
+    private readonly InputAction m_Gameplay_PickupRock;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -406,10 +427,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @GrappleShoot => m_Wrapper.m_Gameplay_GrappleShoot;
         public InputAction @GrappleAim => m_Wrapper.m_Gameplay_GrappleAim;
         public InputAction @GrapplePull => m_Wrapper.m_Gameplay_GrapplePull;
-        public InputAction @LegLeft => m_Wrapper.m_Gameplay_LegLeft;
+        public InputAction @DashRoll => m_Wrapper.m_Gameplay_DashRoll;
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @Mantle => m_Wrapper.m_Gameplay_Mantle;
+        public InputAction @PickupRock => m_Wrapper.m_Gameplay_PickupRock;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -437,9 +459,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @GrapplePull.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrapplePull;
                 @GrapplePull.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrapplePull;
                 @GrapplePull.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrapplePull;
-                @LegLeft.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLegLeft;
-                @LegLeft.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLegLeft;
-                @LegLeft.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLegLeft;
+                @DashRoll.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashRoll;
+                @DashRoll.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashRoll;
+                @DashRoll.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashRoll;
                 @Movement.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
@@ -449,6 +471,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mantle.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMantle;
                 @Mantle.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMantle;
                 @Mantle.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMantle;
+                @PickupRock.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
+                @PickupRock.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
+                @PickupRock.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -471,9 +496,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @GrapplePull.started += instance.OnGrapplePull;
                 @GrapplePull.performed += instance.OnGrapplePull;
                 @GrapplePull.canceled += instance.OnGrapplePull;
-                @LegLeft.started += instance.OnLegLeft;
-                @LegLeft.performed += instance.OnLegLeft;
-                @LegLeft.canceled += instance.OnLegLeft;
+                @DashRoll.started += instance.OnDashRoll;
+                @DashRoll.performed += instance.OnDashRoll;
+                @DashRoll.canceled += instance.OnDashRoll;
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
@@ -483,6 +508,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mantle.started += instance.OnMantle;
                 @Mantle.performed += instance.OnMantle;
                 @Mantle.canceled += instance.OnMantle;
+                @PickupRock.started += instance.OnPickupRock;
+                @PickupRock.performed += instance.OnPickupRock;
+                @PickupRock.canceled += instance.OnPickupRock;
             }
         }
     }
@@ -495,9 +523,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnGrappleShoot(InputAction.CallbackContext context);
         void OnGrappleAim(InputAction.CallbackContext context);
         void OnGrapplePull(InputAction.CallbackContext context);
-        void OnLegLeft(InputAction.CallbackContext context);
+        void OnDashRoll(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnMantle(InputAction.CallbackContext context);
+        void OnPickupRock(InputAction.CallbackContext context);
     }
 }

@@ -54,12 +54,12 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "LegLeft",
+                    "name": "DashRoll",
                     "type": "Button",
                     "id": "3ef4c516-9e7c-4fe1-8706-6e3e33468ee8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold"
+                    "interactions": "Press"
                 },
                 {
                     "name": "Movement",
@@ -83,7 +83,15 @@
                     "id": "a08db63d-26f3-4e9a-94b5-fcf820534f25",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)"
+                    "interactions": "Press"
+                },
+                {
+                    "name": "PickupRock",
+                    "type": "Button",
+                    "id": "0dee2432-1097-471c-9ada-88b97a1eacdd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -182,7 +190,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LegLeft",
+                    "action": "DashRoll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -193,7 +201,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LegLeft",
+                    "action": "DashRoll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -304,6 +312,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Mantle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67bc7558-dc4a-4184-b5ba-73e28e2c6b2a",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickupRock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
