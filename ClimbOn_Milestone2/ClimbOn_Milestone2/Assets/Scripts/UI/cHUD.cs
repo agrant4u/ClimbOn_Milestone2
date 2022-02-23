@@ -11,6 +11,8 @@ public class cHUD : MonoBehaviour
 
     public Text collectiblesNumber;
 
+    public Text gemAmmount;
+
     private void Start()
     {
         startingTime = Time.time;
@@ -24,7 +26,7 @@ public class cHUD : MonoBehaviour
     {
 
         ClockUpdate();
-
+        GemsUpdate();
         CollectibleUpdate();
 
     }
@@ -39,6 +41,12 @@ public class cHUD : MonoBehaviour
         string seconds = (t % 60).ToString("f2");// f2 indicates how many floats we want timer to show
 
         textTime.text = minutes + ":" + seconds;
+
+    }
+
+    void GemsUpdate()
+    {
+        gemAmmount.text = sCharacterController.gemsHeld.ToString();
 
     }
 
