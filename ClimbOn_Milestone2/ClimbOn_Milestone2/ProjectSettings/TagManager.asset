@@ -7,6 +7,7 @@ TagManager:
   - Hold
   - Hands
   - Ground
+  - RangeChecker
   layers:
   - Default
   - TransparentFX
