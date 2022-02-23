@@ -144,6 +144,8 @@ public class sCharacterController : MonoBehaviour
     public static int collectiblesHeld = 0;
     public static int totalCollectibles = 3;
 
+    public static int gemsHeld = 0;
+
     bool canPickupRock;
     bool holdingRock;
     GameObject rockToPickup;
