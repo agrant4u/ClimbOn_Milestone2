@@ -14,7 +14,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (firing)
+        if (firing && Turret.isInRange)
         {
             while (fireTimer >= 1 / fireRate)
             {

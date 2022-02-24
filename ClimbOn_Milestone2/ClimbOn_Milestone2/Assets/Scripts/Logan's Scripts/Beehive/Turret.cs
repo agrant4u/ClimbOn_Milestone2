@@ -8,6 +8,18 @@ public class Turret : MonoBehaviour
     public MountPoint[] mountPoints;
     public Transform target;
 
+    //my added variables
+    public sCharacterController characterController;
+
+    //public bool inRange;
+    //public GameObject rangeChecker;
+    //public int turretRange = 15;
+
+    public static bool isInRange;
+
+    
+    //end of my stuff
+
     void OnDrawGizmos()
     {
 #if UNITY_EDITOR
@@ -43,6 +55,46 @@ public class Turret : MonoBehaviour
 
     void Update()
     {
+        //my added stuff
+
+
+        TurretActivation();
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //GameObject player;
+        
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Turret.isInRange = true;
+            
+            Debug.Log("Player is in Range");
+        }
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        //GameObject player;
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Turret.isInRange = true;
+
+            Debug.Log("Player is in Range");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Turret.isInRange = false;
+        Debug.Log("Object not in Range");
+    }
+
+    void TurretActivation()
+    {
         // do nothing when no target
         if (!target) return;
 
@@ -54,12 +106,17 @@ public class Turret : MonoBehaviour
             {
                 aimed = false;
             }
+
+
+
         }
 
         // shoot when aimed
         if (aimed)
         {
+            
             gun.Fire();
         }
     }
+
 }

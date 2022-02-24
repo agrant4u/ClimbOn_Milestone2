@@ -15,7 +15,7 @@ public class MountPoint : MonoBehaviour
     void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        var range = 10f;
+        var range = 15f;
         var hardpoint = transform;
         var from = Quaternion.AngleAxis(-angleLimit / 2, hardpoint.up) * hardpoint.forward;
 

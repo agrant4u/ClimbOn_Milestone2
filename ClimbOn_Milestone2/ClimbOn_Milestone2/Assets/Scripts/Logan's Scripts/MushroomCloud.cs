@@ -6,7 +6,7 @@ using UnityEngine.ParticleSystemJobs;
 public class MushroomCloud : MonoBehaviour
 {
 
-    public RangeChecker ActivationRange;
+    
     public ParticleSystem mushroomCloud;
     public sCharacterController characterController;
 
@@ -15,7 +15,7 @@ public class MushroomCloud : MonoBehaviour
 
         
         //if the master player transform is within activation range, activate the emission of particles, when player leaves, stop emissions.
-        if (characterController.masterPlayer.transform == ActivationRange)
+        if (characterController.masterPlayer.transform)
         {
             //enable particles
         }
