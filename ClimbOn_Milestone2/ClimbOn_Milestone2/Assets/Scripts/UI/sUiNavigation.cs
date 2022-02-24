@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class sUiNavigation : MonoBehaviour
 {
+    public GameObject cOptions;
+
+    public GameObject panelOptions;
 
     GameManager gm;
 
@@ -19,9 +22,6 @@ public class sUiNavigation : MonoBehaviour
     public void OnPlayButtonPressed()
     {
 
-        //add a move to new scene code
-        
-
         gm.LoadScene(eScene.inGame);
 
         Destroy(this.gameObject);
@@ -31,6 +31,7 @@ public class sUiNavigation : MonoBehaviour
     public void OnOptionsPressed()
     {
 
+        Instantiate(cOptions, panelOptions.transform);
         Debug.Log("Options here!");
 
     }

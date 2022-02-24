@@ -15,17 +15,11 @@ public class sCameraTrigger : MonoBehaviour
 
     CinemachineFreeLook freeLookCam;
 
-    CinemachineOrbitalTransposer orbitTransposer;
-
-    CinemachineFreeLook.Orbit[] orbits;
+    float rigAxis;
 
     public eCameraState camState;
 
     public float transitionTime = 2f;
-
-    float rigAxis;
-
-    float interpolateAmount;
 
 
     private void Awake()
@@ -33,7 +27,7 @@ public class sCameraTrigger : MonoBehaviour
         isTriggered = false;
         freeLookCam = pFreeLookObject.GetComponent<CinemachineFreeLook>();
 
-        
+        SetYAxis();
 
     }
 
