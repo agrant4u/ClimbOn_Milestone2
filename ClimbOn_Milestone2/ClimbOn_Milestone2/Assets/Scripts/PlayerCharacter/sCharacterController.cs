@@ -22,7 +22,8 @@ public class sCharacterController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5f;
     float startingWalkSpeed;
 
-    public float dashSpeed = 500f;
+    public float dashSpeed = 10f;
+    int dashTime;
     public int dashCooldownTime = 5;
     bool isDashing;
 
@@ -151,6 +152,13 @@ public class sCharacterController : MonoBehaviour
     GameObject rockToPickup;
     FixedJoint rockPickupJoint;
 
+    public GameObject cHUD;
+
+    public GameObject pPauseMenu;
+    GameObject pauseObject;
+    bool isPausing = false;
+
+
     void Awake()
     {
 
@@ -188,6 +196,8 @@ public class sCharacterController : MonoBehaviour
 
         controller.Gameplay.DashRoll.performed += conext => DashRoll();
 
+        controller.Gameplay.PAUSE.performed += context => PauseMenu();
+
     }
 
     private void OnEnable()
@@ -222,43 +232,29 @@ public class sCharacterController : MonoBehaviour
     private void Update()
     {
 
-        //CameraUpdate();
-
-        // INPUT PER FRAME HERE
-        //Vector2 movement = controller.Gameplay.Movement.ReadValue<Vector2>();
-        //h = movement.x;
-        //v = movement.y;
-
-        if (!jumpDown)
-        {
-            //jumpDown = controller.Gameplay.Jump.triggered;
-        }
-
         FallCheck();
 
         HealthCheck();
 
         ReticleUpdate();
-
-        
+   
     }
 
     void FixedUpdate()
     {
-        //CameraFollow();
 
         MovementHandler();
 
-
-
     }
+
+    // SETS ANIMATION SPEED
 
     void SetAnimatorSpeed(float _speed)
     {
         animController.speed = _speed;
     }
 
-
+    // CHARACTER COLLISON ENTER!
     private void OnCollisionEnter(Collision collision)
     {
         
@@ -297,6 +293,8 @@ public class sCharacterController : MonoBehaviour
         
 
     }
+
+    // CHARACTER COLLISION EXIT!
 
     private void OnCollisionExit(Collision collision)
     {
@@ -987,7 +985,7 @@ public class sCharacterController : MonoBehaviour
 
     } // LETS PLAYER MOVE WHILE JUMPING IN AIR
 
-
+    
     void DashRoll()
     {
 
@@ -999,44 +997,66 @@ public class sCharacterController : MonoBehaviour
             isDashing = true;
             Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
 
-            if (currentState == ePlayerControlState.CLIMBING)
+            StartCoroutine(DashMovement(currentState));
+        }
+        
+    }
+
+    
+    IEnumerator DashMovement(ePlayerControlState _state)
+    {
+
+        switch(_state)
             {
+                case ePlayerControlState.CLIMBING:
 
-                rb.useGravity = true;
+                    DashCoolDown();
 
-                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new Vector3(input.x * dashSpeed, input.y * dashSpeed, 0), Time.deltaTime * 3);
+                    break;
+                case ePlayerControlState.WALKING:
+                case ePlayerControlState.JUMPING:
+                case ePlayerControlState.OVERHANGING:
+                case ePlayerControlState.FALLING:
 
-                rb.AddForce(new Vector3(input.x * dashSpeed, input.y * dashSpeed, 0), ForceMode.Impulse);
-                
-                StartCoroutine(DashCooldown());
+                    DashCoolDown();
+
+                    break;
             }
 
-            else
+        float counter = 0;
+
+            Debug.Log("Dash cooling down");
+
+            while (counter<dashCooldownTime)
             {
 
-                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new Vector3(input.x * dashSpeed, 0, input.y * dashSpeed), Time.deltaTime * 3);
-                rb.AddForce(new Vector3(input.x * dashSpeed, 0, input.y * dashSpeed), ForceMode.Impulse);
-                StartCoroutine(DashCooldown());
+                //gameObject.transform.position += 
+                counter += Time.deltaTime;
+                yield return null;
+
+            }
+
+     
+
+        Debug.Log("You can now dash again!");
+        isDashing = false;
+
+    }
+
+    
+    IEnumerator DashCoolDown()
+        {
+
+            dashCooldownTime = 3;
+
+            // DASH COOLDOWN
+            for (int i = 0; i < dashCooldownTime; i++)
+            {
+                yield return new WaitForSeconds(1);
             }
         }
 
         
-
-    }
-
-    IEnumerator DashCooldown()
-    {
-        Debug.Log("Dash cooling down");
-
-        for (int i = 0; i < dashCooldownTime; i++)
-        {
-
-            yield return new WaitForSeconds(1);
-        }
-
-        Debug.Log("You can now dash again!");
-        isDashing = false;
-    }
 
     // NEESD IMPLEMENTATION
     private bool isFacingWall()
@@ -1059,7 +1079,7 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    public void SpeedBurst(float _boostAmount)
+    public void SpeedBurst(float _boostAmount, float _boostTime)
     {
 
         startingClimbSpeed = climbSpeed;
@@ -1068,21 +1088,16 @@ public class sCharacterController : MonoBehaviour
         climbSpeed += _boostAmount;
         walkSpeed += _boostAmount;
 
-        StartCoroutine("SpeedUp");
+        StartCoroutine(SpeedUp(_boostTime));
 
     }
 
-    IEnumerator SpeedUp()
+    IEnumerator SpeedUp(float _time)
     {
 
         Debug.Log("Speed Boost Happening!");
 
-        for (int i = 0; i < speedBoostTime; i++)
-        {
-
-            yield return new WaitForSeconds(1);
-
-        }
+        yield return new WaitForSeconds(_time);  
 
         SpeedUpEnd();
 
@@ -1226,7 +1241,6 @@ public class sCharacterController : MonoBehaviour
 
             umbrella.SetActive(false);
 
-
         }
 
     }
@@ -1285,6 +1299,28 @@ public class sCharacterController : MonoBehaviour
                                                 20f,
                                                 Time.fixedDeltaTime);
         transform.forward = cameraTarget.position - transform.position;
+
+    }
+
+    void PauseMenu()
+    {
+        if(!isPausing)
+        {
+            isPausing = true;
+            Time.timeScale = 0;
+            pauseObject = Instantiate(pPauseMenu, cHUD.transform);
+
+        }
+
+        else
+        {
+
+            isPausing = false;
+            Time.timeScale = 1;
+            Destroy(pauseObject);
+
+        }
+
 
     }
 

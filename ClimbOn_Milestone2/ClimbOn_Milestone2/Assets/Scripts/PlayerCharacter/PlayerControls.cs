@@ -105,6 +105,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PAUSE"",
+                    ""type"": ""Button"",
+                    ""id"": ""51636685-6114-435e-9cee-cde3059bd7f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -144,7 +152,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""09a24aff-107e-4398-86f0-a7267a225494"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -166,7 +174,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""23007ea9-97c9-4487-a7b1-a080798103df"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -188,7 +196,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e03439b6-c7d5-4d62-aea2-3039449a8346"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -210,7 +218,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c7907ebf-75a7-4594-9ac6-f5831d51380e"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -296,6 +304,61 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""04558d93-7c44-4306-8da2-faf67f56a568"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""35da1101-d694-4b8b-9e84-f1403f51cfbc"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""a4affd7f-b31e-4f2b-a598-a6b578c2e0b0"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3f6358a5-3df5-48aa-bb22-e32050646e2e"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b13bc443-6e0e-40a0-b177-855624c696a5"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""db7a0508-f39b-4b1b-8baa-9457df7cd8be"",
                     ""path"": ""<Gamepad>/rightTrigger"",
@@ -319,8 +382,30 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5f41bbdf-69a1-449d-af9e-c817ebe43eef"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GrapplePull"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""4a263e98-82ee-4de0-95f4-993d12f3dc4e"",
                     ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mantle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""baea7872-0af3-401f-889b-5723e5897d23"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -336,6 +421,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PickupRock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""baf5e5bc-6850-4363-9562-c318f32e1d2d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickupRock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c76b6293-36d2-433f-84b0-2b9968edcf61"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PAUSE"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3d04a72-7f37-4045-86f2-b5dc4d5e0214"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PAUSE"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -357,6 +475,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_Mantle = m_Gameplay.FindAction("Mantle", throwIfNotFound: true);
         m_Gameplay_PickupRock = m_Gameplay.FindAction("PickupRock", throwIfNotFound: true);
+        m_Gameplay_PAUSE = m_Gameplay.FindAction("PAUSE", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -417,6 +536,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_Mantle;
     private readonly InputAction m_Gameplay_PickupRock;
+    private readonly InputAction m_Gameplay_PAUSE;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -432,6 +552,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @Mantle => m_Wrapper.m_Gameplay_Mantle;
         public InputAction @PickupRock => m_Wrapper.m_Gameplay_PickupRock;
+        public InputAction @PAUSE => m_Wrapper.m_Gameplay_PAUSE;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -474,6 +595,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PickupRock.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
                 @PickupRock.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
                 @PickupRock.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickupRock;
+                @PAUSE.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPAUSE;
+                @PAUSE.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPAUSE;
+                @PAUSE.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPAUSE;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -511,6 +635,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PickupRock.started += instance.OnPickupRock;
                 @PickupRock.performed += instance.OnPickupRock;
                 @PickupRock.canceled += instance.OnPickupRock;
+                @PAUSE.started += instance.OnPAUSE;
+                @PAUSE.performed += instance.OnPAUSE;
+                @PAUSE.canceled += instance.OnPAUSE;
             }
         }
     }
@@ -528,5 +655,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnCamera(InputAction.CallbackContext context);
         void OnMantle(InputAction.CallbackContext context);
         void OnPickupRock(InputAction.CallbackContext context);
+        void OnPAUSE(InputAction.CallbackContext context);
     }
 }

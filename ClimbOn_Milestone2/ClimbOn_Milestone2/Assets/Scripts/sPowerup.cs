@@ -6,7 +6,8 @@ public enum powerupType { SPEED_BURST, STAMINA_BOOST, STAMINA_BUFF}
 
 public class sPowerup : MonoBehaviour
 {
-    public float speedBoostTime = 0;
+
+    public float speedBoostTime = 10f;
     public float speedBoostAmount = 10f;
 
     public float staminaBoostAmount = 50f;
@@ -14,16 +15,6 @@ public class sPowerup : MonoBehaviour
     public powerupType currentPowerupType;
 
     sCharacterController player;
-
-    float startingClimbSpeed;
-    float startingWalkSpeed;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -33,6 +24,7 @@ public class sPowerup : MonoBehaviour
         {
 
             InitPowerup();
+
 
         }
 
@@ -74,9 +66,10 @@ public class sPowerup : MonoBehaviour
 
     void SpeedBurst()
     {
-        player.SpeedBurst(speedBoostAmount);
 
-        Destroy(this.gameObject);
+        player.SpeedBurst(speedBoostAmount, speedBoostTime);
+
+        PowerupDestroy();
 
     }
 
@@ -86,7 +79,7 @@ public class sPowerup : MonoBehaviour
 
         player.StaminaChange(staminaBoostAmount);
 
-        Destroy(this.gameObject);
+        PowerupDestroy();
 
     }
 
@@ -100,7 +93,7 @@ public class sPowerup : MonoBehaviour
     void PowerupDestroy()
     {
 
-        Destroy(gameObject);
+        Destroy(this.gameObject);
 
     }
 
