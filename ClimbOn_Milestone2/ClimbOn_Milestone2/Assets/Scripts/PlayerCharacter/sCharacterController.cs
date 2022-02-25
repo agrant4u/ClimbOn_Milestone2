@@ -1294,8 +1294,8 @@ public class sCharacterController : MonoBehaviour
 
             vineHeld = null;
             sCharacterController.isHoldingVine = false;
-            rb.AddForce(new Vector3(0, jumpForce, -jumpForce * 2), ForceMode.Impulse);
-            currentState = ePlayerControlState.JUMPING;
+            //rb.AddForce(new Vector3(0, jumpForce, -jumpForce * 2), ForceMode.Impulse);
+            //currentState = ePlayerControlState.JUMPING;
 
         }
 
