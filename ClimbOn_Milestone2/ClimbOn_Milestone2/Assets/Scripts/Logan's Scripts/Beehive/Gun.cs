@@ -40,6 +40,9 @@ public class Gun : MonoBehaviour
 
     void SpawnShot()
     {
+
+        AudioManager.am.PlaySFX(eSFX.beeShot);
+
         var gunPoint = gunPoints[gunPointIndex++];
         Instantiate(shotPrefab, gunPoint.position, gunPoint.rotation);
         gunPointIndex %= gunPoints.Length;

@@ -59,6 +59,8 @@ public class sSnakeHoleBehavior : MonoBehaviour
 
             //snakeAnimator.SetBool("isSnakeMoving", true);
 
+            AudioManager.am.PlaySFX(eSFX.snakeTrigger);
+
             snake = Instantiate(snakeBody, this.gameObject.transform.position, Quaternion.identity);
             GetRandomAttackSpot();
             snake.GetComponent<Rigidbody>().AddForce(attackDirection*attackSpeed - offset);

@@ -305,7 +305,58 @@ MonoBehaviour:
   masterMixer: {fileID: 24300002, guid: 42f1f2cf1af9bff41ae1037ece92bfe6, type: 2}
   musicMixer: {fileID: 4048731534807554747, guid: 42f1f2cf1af9bff41ae1037ece92bfe6, type: 2}
   sfxMixer: {fileID: 4008241797458819344, guid: 42f1f2cf1af9bff41ae1037ece92bfe6, type: 2}
-  sfxClip: []
-  musicClip: []
+  music:
+  - {fileID: 0}
+  sfx:
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 3fdc3fce0bfb8a744a4e58d8f4caa788, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 8d6e819576949054cb8373d7d454108a, type: 3}
+  - {fileID: 8300000, guid: 04ada2b8cbc345849881ff5239374575, type: 3}
+  - {fileID: 8300000, guid: 8ef01c215f0f49f45a2e30c896207762, type: 3}
+  - {fileID: 8300000, guid: 965100587acd92846836778a779e1ce4, type: 3}
+  - {fileID: 8300000, guid: 0d5ef8400723b34459876dc26359af5a, type: 3}
+  - {fileID: 8300000, guid: 8c6902cb61f6b6242934e9975d74a3d7, type: 3}
+  - {fileID: 8300000, guid: ae5ddc12686f24541975a288540833c1, type: 3}
+  - {fileID: 8300000, guid: dcee46d03e15b7a46b63ca5fb5df42d2, type: 3}
+  - {fileID: 8300000, guid: ad2c7217433dcde45a45ca827b496e23, type: 3}
+  - {fileID: 8300000, guid: 1db6a42c8ae09704ea10865843efade7, type: 3}
+  - {fileID: 8300000, guid: 360901831e3b8994588c0af4d33d589f, type: 3}
+  - {fileID: 8300000, guid: 30509208febb17147a262ecfd7df7c96, type: 3}
+  - {fileID: 8300000, guid: ed1bf7fe22fd10543bb54480e965f25f, type: 3}
+  - {fileID: 8300000, guid: b24e6675c50402849b866b65f77909a9, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: fdd14d8927409a04b988fc9f6da0f1ad, type: 3}
+  - {fileID: 8300000, guid: 2ad5098f81f0766419a050cdf3945ca3, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 455fbe4a43c14fd4a99fb738491a9c69, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: e2d9825a532941846ace33adbd84a75a, type: 3}
+  - {fileID: 8300000, guid: 57ebc5741af406e42b001164d203fd79, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   sfxSource: {fileID: 5302217206091704459}
   musicSource: {fileID: 5672927626269044049}

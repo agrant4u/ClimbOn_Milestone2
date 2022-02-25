@@ -8,6 +8,7 @@ public class uStaminaManager : MonoBehaviour
     public Image staminaBar;
     public Text staminaText;
 
+    bool staminaWarning;
 
     void Start()
     {
@@ -31,6 +32,9 @@ public class uStaminaManager : MonoBehaviour
 
         if (currentStamina <= (maxStamina * 0.1))
             staminaBar.color = Color.red;
+                
+            
+
         else
         {
             //staminaBar.color = Color.cyan;

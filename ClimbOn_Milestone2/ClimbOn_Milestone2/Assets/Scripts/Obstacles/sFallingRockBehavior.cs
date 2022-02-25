@@ -43,8 +43,9 @@ public class sFallingRockBehavior : MonoBehaviour
         player = collision.gameObject.GetComponent<sCharacterController>();
         if (player)
         {
-
-            player.gameObject.GetComponent<Rigidbody>().AddForce(rb.velocity * rockFallPower);
+            AudioManager.am.PlaySFX(eSFX.fallingRockHit);
+            //player.gameObject.GetComponent<Rigidbody>().AddForce(rb.velocity * rockFallPower);
+            player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * rockFallPower, ForceMode.Acceleration);
 
 
         }

@@ -99,14 +99,7 @@ public class sGrapplingGun : MonoBehaviour
         if (joint)
         {
 
-            
-
-            // SMOOTH MOVES PLAYER TO GRAPPLE POINT
-            //player.transform.position = Vector3.Lerp(player.transform.position,
-                                                   //grapplingPoint,
-                                                   //Time.deltaTime);
-
-            StartCoroutine("GrappleMove");
+            StartCoroutine(GrappleMove());
 
         }
 
@@ -128,32 +121,33 @@ public class sGrapplingGun : MonoBehaviour
     IEnumerator GrappleMove()
     {
 
-        int grappleCounter = 0;
-        int grappleTime = 200;
-        float grappleSpeed = 30f;
+        
+
+        float grappleCounter = 0;
+        float grappleTime;
+
+        grappleTime = (grapplingPoint.z - transform.position.z);
+
+        //float grappleSpeed = 30f;
 
         Debug.Log("Grapple Move!");
 
-            while (grappleCounter < grappleTime)
+            while (grappleCounter < grappleTime && joint)
             {
+ 
+                player.transform.position = Vector3.Lerp(player.transform.position,
+                                                   grapplingPoint,
+                                                   (grappleCounter/grappleTime));
 
-
-            if (joint)
-            {
-                //player.transform.position = Vector3.Lerp(player.transform.position,
-                                                   //grapplingPoint,
-                                                   //Time.deltaTime * grappleSpeed);
-
-                player.transform.position = Vector3.MoveTowards(player.transform.position, grapplingPoint, Time.deltaTime * grappleSpeed);
-            }
-           
-            grappleCounter++;
-
-            yield return new WaitForSeconds(0.001f);
+                grappleCounter += Time.deltaTime;
+             
+                //player.transform.position = Vector3.MoveTowards(player.transform.position, grapplingPoint, Time.deltaTime * grappleSpeed); 
+                
+                yield return null;
 
             }
 
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
 
     }
 

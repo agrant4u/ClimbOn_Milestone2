@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/multiPlayerLoading.unity
+    path: Assets/Scenes/multiPlayer/multiPlayerLoading.unity
     guid: 11e0cf904dc18a7499591185292cf3e4
   - enabled: 1
-    path: Assets/Scenes/multiPlayerLobby.unity
+    path: Assets/Scenes/multiPlayer/multiPlayerLobby.unity
     guid: 397046029e5d0a24894bad505edb64ae
   - enabled: 1
     path: Assets/Scenes/ClimbOn_GRANTO.unity

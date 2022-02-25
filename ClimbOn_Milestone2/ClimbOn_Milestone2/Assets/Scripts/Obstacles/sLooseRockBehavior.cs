@@ -36,9 +36,10 @@ public class sLooseRockBehavior : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
 
+            AudioManager.am.PlaySFX(eSFX.looseRockTrigger);
+
             float elapsedTime = 0f;
            
-
             Debug.Log("Loose Rock triggered by " + collision.gameObject.name);
 
             // SHOOTS ROCK OUT
@@ -46,8 +47,8 @@ public class sLooseRockBehavior : MonoBehaviour
             rb.AddForce(0, 0, -rockFallForce, ForceMode.Impulse);
 
             // KNOCKS PLAYER DOWN
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(0, -rockKnockdownForce, 0, ForceMode.Impulse);
-            
+            //collision.gameObject.GetComponent<Rigidbody>().AddForce(0, -rockKnockdownForce, 0, ForceMode.Impulse);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down*rockKnockdownForce, ForceMode.Impulse);
 
             while (elapsedTime < fallTime)
             {

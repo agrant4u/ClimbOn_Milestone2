@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public enum eSFX {click, noGo, buy, jail, sweep, chance, commChest, rent, railroad, electric, waterworks, dice, luxury, income, cha_Ching, free, GO, saveLoad, sell, construct, carDrive, thimbleFly, whistle, diceLoop, tada, sad_ahh, property }
-public enum eMusic {Flux, Collage, CandyShop, Subversie }
+public enum eSFX { footsteps, jumping, climbing, dash, mantle, gemGrab, collectibleGrab, grappleStart, grappleStop, grapplePull, umbrellaUp, umbrellaDown, staminaLow, staminaPickup, speedBoost, snakeTrigger, goatBuck, goatBaaaa, rockPickup, rockThrow, ropeSwing, fallingRockHit, looseRockTrigger, death, checkPoint, beeShot, shroom }
+
+public enum eMusic { music1 }
+
+public enum eUIaudio { click, select, slider, startGame, pauseOn, pauseOff, quit }
 
 
 public class AudioManager : MonoBehaviour
@@ -26,30 +29,21 @@ public class AudioManager : MonoBehaviour
 
     [Space]
     [Header("Audio Clips")]
-
-    public AudioClip[] sfxClip;
-
-    public AudioClip[] musicClip;
-
+    [NamedArray(typeof(eMusic))] public AudioClip[] music;
+    [NamedArray(typeof(eSFX))] public AudioClip[] sfx;
     private AudioClip currentMusic;
+    eMusic eCurrentMusic;
 
     [Space]
     [Header("Audio Sources")]
     public AudioSource sfxSource;
     public AudioSource musicSource;
 
-    public static int musicOrder = 0;
-
-    //[NamedArray(typeof(eMusic))] public AudioClip[] music;
-
-    //[NamedArray(typeof(eSFX))] public AudioClip[] sfx;
-    //[NamedArray(typeof(eSFX))] public AudioClip[] sfx;
-
+    public static int musicOrder = 0; 
 
     // Awake Refs
     private void Awake()
-    {
-       
+    {  
 
         if (am == null)
         {
@@ -57,7 +51,9 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             am = this;
 
-
+            eCurrentMusic = (int)(eMusic)0;
+            currentMusic = music[(int)eCurrentMusic];
+            musicSource.clip = currentMusic;
         }
 
         else if (am != this)
@@ -69,19 +65,30 @@ public class AudioManager : MonoBehaviour
 
         //am = GetComponentInChildren<AudioManager>();
 
-        currentMusic = musicClip[musicOrder];
-        PlayMusic(musicClip[musicOrder]);
+        //currentMusic = musicClip[musicOrder];
+        //PlayMusic(musicClip[musicOrder]);
         
     }
 
-    public void EPlayMusic(eMusic _music)
+    public void PlayMusic(eMusic _music)
     {
-        //musicSource.Play(music[(int)_music]);
+
+        currentMusic = music[(int)_music];
+        
+        musicSource.Play();
+
     }
 
-    public void EPlaySFX(eSFX _sfx)
+    public void PlaySFX(eSFX _sfx)
     {
-        //sfxSource.PlayOneShot(sfx[(int)_sfx]);
+       sfxSource.PlayOneShot(sfx[(int)_sfx]);
+    }
+
+    public void PlayUIAudio(eUIaudio _uiAudio)
+    {
+
+        sfxSource.PlayOneShot(sfx[(int)_uiAudio]);
+
     }
 
     // MIXER CONTROLS
@@ -106,28 +113,9 @@ public class AudioManager : MonoBehaviour
         masterVolume = _newValue;
     }
 
-
-    // PLAY CONTROLS
-    public void PlaySFX(AudioClip sfxClip)
-    {
-
-        sfxSource.PlayOneShot(sfxClip);// Plays sound fx clip
-
-        //sfxSource[(int)_soundIndex].Play();
-
-    }
-
-    public void PlayMusic(AudioClip musicClip)
-    {
-        musicSource.clip = musicClip;
-        musicSource.Play();
-
-        //musicSource[(int)_musicIndex].Play();
-
-    }// Plays music
-
     // STOP SOUNDS
    
+    /*
     public void StopMusic()
     {
 
@@ -150,7 +138,7 @@ public class AudioManager : MonoBehaviour
             
             musicSource.Stop();
             musicOrder++;
-            PlayMusic(musicClip[musicOrder]);
+            //PlayMusic(musicClip[musicOrder]);
            
         }
 
@@ -162,7 +150,7 @@ public class AudioManager : MonoBehaviour
         {
             musicOrder--;
             musicSource.Stop();
-            PlayMusic(musicClip[musicOrder]);
+            //PlayMusic(musicClip[musicOrder]);
         }
         else
         {
@@ -172,11 +160,7 @@ public class AudioManager : MonoBehaviour
 
     }// Changes to previous song in array
 
-    public int GetMaxSongs()
-    {
-       
-     int maxMusic = musicClip.Length;
-     return maxMusic;
-}// Returns music array length
+
+    */
 
 }

@@ -23,6 +23,9 @@ public class sGoatBehavior : MonoBehaviour
         if (!sCharacterController.isGettingBucked && player)
         {
 
+            AudioManager.am.PlaySFX(eSFX.goatBuck);
+            AudioManager.am.PlaySFX(eSFX.goatBaaaa);
+
             Debug.Log("Goat is launching" + collision.gameObject.name);
             player.gameObject.GetComponent<Rigidbody>().AddForce(0, buckForce, 0, ForceMode.Impulse);
 

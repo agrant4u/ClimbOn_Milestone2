@@ -15,7 +15,7 @@ public class sCollectible : MonoBehaviour
 
         if (player)
         {
-
+            AudioManager.am.PlaySFX(eSFX.collectibleGrab);
             sCharacterController.collectiblesHeld++;
 
             Destroy(this.gameObject);

@@ -18,7 +18,7 @@ public class sGems : MonoBehaviour
 
         if (player)
         {
-
+            AudioManager.am.PlaySFX(eSFX.gemGrab);
             sCharacterController.gemsHeld+=gemValue;
 
             

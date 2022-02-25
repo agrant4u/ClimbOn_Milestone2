@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE, JUMPING, QTE }
+public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE, JUMPING, VINEHANG, QTE }
 
 public class sCharacterController : MonoBehaviour
 {
+
+    AudioManager am;
 
     PlayerControls controller;
 
@@ -156,11 +158,14 @@ public class sCharacterController : MonoBehaviour
 
     public GameObject pPauseMenu;
     GameObject pauseObject;
-    bool isPausing = false;
+    public static bool isPausing = false;
 
+    public static bool isHoldingVine;
+    GameObject vineHeld;
 
     void Awake()
     {
+        am = AudioManager.am;
 
         // SETS STARTING PLAYER POSITION TO 1st CheckPoint or StartingPoint
         currentCheckPointPosition = startingPosition.position;
@@ -192,7 +197,7 @@ public class sCharacterController : MonoBehaviour
 
         controller.Gameplay.Mantle.performed += context => attempingMantle = !attempingMantle;
 
-        controller.Gameplay.PickupRock.performed += context => RockPickup();
+        controller.Gameplay.PickupRock.performed += context => GrabMaster();
 
         controller.Gameplay.DashRoll.performed += conext => DashRoll();
 
@@ -225,7 +230,7 @@ public class sCharacterController : MonoBehaviour
         startingWalkSpeed = walkSpeed;
         currentHitPoints = maxHitPoints;
         currentStamina = maxStamina;
-
+        sCharacterController.isHoldingVine = false;
 
     }
 
@@ -560,8 +565,8 @@ public class sCharacterController : MonoBehaviour
     void MantleMove(Vector3 _spotToMove)
     {
 
-
-            Vector3 offset = new Vector3(0, 1.5f, 0);
+        am.PlaySFX(eSFX.mantle);
+        Vector3 offset = new Vector3(0, 1.5f, 0);
             Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
             transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
  
@@ -570,7 +575,7 @@ public class sCharacterController : MonoBehaviour
 
     void PlayerDeath()
     {
-
+        am.PlaySFX(eSFX.death);
         Vector3 offset = new Vector3(0, 1f, 0);
         gameObject.transform.position = currentCheckPointPosition + offset;
         sCharacterController.isDead = false;
@@ -622,6 +627,11 @@ public class sCharacterController : MonoBehaviour
                     JumpMovement(walkDirection);
                     break;
                 }
+            case ePlayerControlState.VINEHANG:
+            {
+                    VineHang();      
+                break;
+            }
            
         }
 
@@ -947,6 +957,7 @@ public class sCharacterController : MonoBehaviour
                 // WALL JUMP
                 if (currentState == ePlayerControlState.CLIMBING)
                 {
+                    am.PlaySFX(eSFX.jumping);
                     Debug.Log("Climbing Jump");
                     isJumping = true;
                     rb.useGravity = true;
@@ -957,6 +968,7 @@ public class sCharacterController : MonoBehaviour
                 //REGULAR WALK JUMP
                 else if (currentState == ePlayerControlState.WALKING)
                 {
+                    am.PlaySFX(eSFX.jumping);
                     Debug.Log("Walking Jump");
                     isJumping = true;
                     rb.useGravity = true;
@@ -996,6 +1008,8 @@ public class sCharacterController : MonoBehaviour
 
             isDashing = true;
             Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
+
+            am.PlaySFX(eSFX.dash);
 
             StartCoroutine(DashMovement(currentState));
         }
@@ -1081,6 +1095,7 @@ public class sCharacterController : MonoBehaviour
 
     public void SpeedBurst(float _boostAmount, float _boostTime)
     {
+        am.PlaySFX(eSFX.speedBoost);
 
         startingClimbSpeed = climbSpeed;
         startingWalkSpeed = walkSpeed;
@@ -1119,6 +1134,7 @@ public class sCharacterController : MonoBehaviour
     public void StaminaChange(float _amount)
     {
 
+        am.PlaySFX(eSFX.staminaPickup);
         currentStamina += _amount;
 
     }
@@ -1143,6 +1159,7 @@ public class sCharacterController : MonoBehaviour
 
                 animController.SetBool("isFalling", false);
 
+                am.PlaySFX(eSFX.grappleStart);
                 grappleGunBehavior.StartGrapple();
 
 
@@ -1151,7 +1168,7 @@ public class sCharacterController : MonoBehaviour
             else
             {
 
-
+                am.PlaySFX(eSFX.grappleStop);
                 grappleGunBehavior.StopGrapple();
 
 
@@ -1172,6 +1189,7 @@ public class sCharacterController : MonoBehaviour
 
         if (isGrappling)
         {
+            am.PlaySFX(eSFX.grapplePull);
             isJumping = false;
             grappleGun.GetComponent<sGrapplingGun>().GrappleRetract();
 
@@ -1226,6 +1244,7 @@ public class sCharacterController : MonoBehaviour
         {
             if (currentState != ePlayerControlState.CLIMBING)
             {
+                am.PlaySFX(eSFX.umbrellaUp);
 
                 umbrella.SetActive(true);
 
@@ -1238,7 +1257,7 @@ public class sCharacterController : MonoBehaviour
 
         else
         {
-
+            am.PlaySFX(eSFX.umbrellaDown);
             umbrella.SetActive(false);
 
         }
@@ -1252,27 +1271,87 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    void RockPickup()
+    void GrabMaster()
     {
+
 
         if (holdingRock && rockPickupJoint)
         {
-
-            Destroy(rockPickupJoint);
-            rockToPickup.GetComponent<Rigidbody>().AddForce(gameObject.transform.localPosition + Vector3.up * 500);
-            rockToPickup = null;
-            holdingRock = false;
-
+            RockThrow();
         }
 
-        if(canPickupRock)
+        else if(canPickupRock && !sCharacterController.isHoldingVine)
         {
-            rockPickupJoint = gameObject.AddComponent<FixedJoint>();
-            rockPickupJoint.connectedBody = rockToPickup.GetComponent<Rigidbody>();
-            
-            holdingRock = true;
-            
+            RockPickUp();
         }
+
+        if (sCharacterController.isHoldingVine && vineHeld)
+        {
+
+            FixedJoint fj;
+            fj = vineHeld.GetComponent<FixedJoint>();
+            Destroy(fj);
+
+            vineHeld = null;
+            sCharacterController.isHoldingVine = false;
+            rb.AddForce(new Vector3(0, jumpForce, -jumpForce * 2), ForceMode.Impulse);
+            currentState = ePlayerControlState.JUMPING;
+
+        }
+
+        else
+        {
+
+
+
+        }
+
+    }
+
+    public void VineHold(GameObject _vine)
+    {
+        
+        vineHeld = _vine;
+        
+        currentState = ePlayerControlState.VINEHANG;
+
+        Debug.Log("Grabbing Vine");
+
+    }
+
+    void VineHang()
+    {
+
+        Debug.Log("Stil Holding Vine");
+
+        //Vector2 movement = controller.Gameplay.Movement.ReadValue<Vector2>();
+
+        //transform.position = Vector3.Lerp(transform.forward, vineHeld.transform.position, 0.5f);
+
+        // MOVE ALONG THE VINE
+        //rb.velocity = transform.up * movement.y * climbSpeed + transform.right * movement.x * climbSpeed;
+
+
+    }
+
+
+
+    void RockThrow()
+    {
+        Destroy(rockPickupJoint);
+        rockToPickup.GetComponent<Rigidbody>().AddForce(gameObject.transform.localPosition + Vector3.up * 500);
+        rockToPickup = null;
+        holdingRock = false;
+    }
+
+    void RockPickUp()
+    {
+        //am.PlaySFX(eSFX.rockPickup);
+
+        rockPickupJoint = gameObject.AddComponent<FixedJoint>();
+        rockPickupJoint.connectedBody = rockToPickup.GetComponent<Rigidbody>();
+
+        holdingRock = true;
 
     }
 
@@ -1309,6 +1388,7 @@ public class sCharacterController : MonoBehaviour
             isPausing = true;
             Time.timeScale = 0;
             pauseObject = Instantiate(pPauseMenu, cHUD.transform);
+            //am.PlayUIAudio(eUIaudio.pauseOn);
 
         }
 
@@ -1317,6 +1397,7 @@ public class sCharacterController : MonoBehaviour
 
             isPausing = false;
             Time.timeScale = 1;
+            //am.PlayUIAudio(eUIaudio.pauseOff);
             Destroy(pauseObject);
 
         }
