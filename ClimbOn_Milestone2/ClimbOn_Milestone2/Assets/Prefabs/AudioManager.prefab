@@ -358,5 +358,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  ui:
+  - {fileID: 8300000, guid: 529882c79d07e674190e0d3be2b35265, type: 3}
+  - {fileID: 8300000, guid: c971baf26e09cb949968182cbf441d98, type: 3}
+  - {fileID: 0}
+  - {fileID: 8300000, guid: 686fb00d0a4d1774797374dee9a105a7, type: 3}
+  - {fileID: 8300000, guid: 43dc973e4aac42e4bae24c8fd46b59a5, type: 3}
+  - {fileID: 8300000, guid: 43dc973e4aac42e4bae24c8fd46b59a5, type: 3}
+  - {fileID: 8300000, guid: 72ebb503219bd804695b5b8730815bd3, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   sfxSource: {fileID: 5302217206091704459}
   musicSource: {fileID: 5672927626269044049}

@@ -179,7 +179,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302075016}
-  m_LocalRotation: {x: -0.018189488, y: -0.000000017203536, z: -3.1297523e-10, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189488, y: 0.000000017203536, z: 3.1297526e-10, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -775,6 +775,7 @@ GameObject:
   - component: {fileID: 1826181068}
   - component: {fileID: 1826181067}
   - component: {fileID: 1826181066}
+  - component: {fileID: 904984164}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -789,7 +790,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826181065}
-  m_LocalRotation: {x: -0.018189494, y: -0.000000017514909, z: -3.0730024e-10, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189494, y: 0.000000017514907, z: 3.0730024e-10, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -873,6 +874,14 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!81 &904984164
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826181065}
+  m_Enabled: 1
 --- !u!1 &235223256658025130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1267,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 598
+  m_VersionIndex: 613
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1923,7 +1932,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 784
+  m_VersionIndex: 799
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2584,7 +2593,7 @@ GameObject:
   - component: {fileID: 5352887104515074813}
   m_Layer: 0
   m_Name: Tail
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2911,6 +2920,8 @@ MonoBehaviour:
   grappleGun: {fileID: 7707729461080627746}
   isGrappling: 0
   reticle: {fileID: 6424943575965763127}
+  cHUD: {fileID: 0}
+  pPauseMenu: {fileID: 8570935151132133969, guid: f2a532ae15140c84dab081e51acb2635, type: 3}
 --- !u!1 &6037416060782257970
 GameObject:
   m_ObjectHideFlags: 0
@@ -3022,7 +3033,7 @@ GameObject:
   - component: {fileID: 4953320684497082997}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3119,7 +3130,7 @@ GameObject:
   - component: {fileID: 5097858428102060341}
   m_Layer: 0
   m_Name: Sphere (1)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3657,7 +3668,7 @@ GameObject:
   - component: {fileID: 2843271953932630236}
   m_Layer: 0
   m_Name: PLAYER_MASTER_current
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

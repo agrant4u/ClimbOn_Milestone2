@@ -31,6 +31,8 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Clips")]
     [NamedArray(typeof(eMusic))] public AudioClip[] music;
     [NamedArray(typeof(eSFX))] public AudioClip[] sfx;
+    [NamedArray(typeof(eUIaudio))] public AudioClip[] ui;
+
     private AudioClip currentMusic;
     eMusic eCurrentMusic;
 
@@ -81,13 +83,14 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(eSFX _sfx)
     {
+        Debug.Log("Playing " + sfx[(int)_sfx]);
        sfxSource.PlayOneShot(sfx[(int)_sfx]);
     }
 
     public void PlayUIAudio(eUIaudio _uiAudio)
     {
 
-        sfxSource.PlayOneShot(sfx[(int)_uiAudio]);
+        sfxSource.PlayOneShot(ui[(int)_uiAudio]);
 
     }
 

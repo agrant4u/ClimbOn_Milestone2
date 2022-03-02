@@ -185,7 +185,7 @@ public class sCharacterController : MonoBehaviour
         animController = masterPlayer.GetComponent<Animator>();
         SetAnimatorSpeed(animatorSpeed);
 
-        controller.Gameplay.Jump.performed += Jump;
+        controller.Gameplay.Jump.performed += context => Jump();
 
         controller.Gameplay.GrappleAim.performed += context => isAimingGrapple = !isAimingGrapple;
         controller.Gameplay.GrappleShoot.performed += context => GrappleShoot();
@@ -945,20 +945,20 @@ public class sCharacterController : MonoBehaviour
               
     }
 
-    void Jump(InputAction.CallbackContext _context)  // JUMP ACTION.  FEET HAVE OTHER SCRIPT TO CHECK FOR GROUND COLLISION
+    void Jump()  // JUMP ACTION.  FEET HAVE OTHER SCRIPT TO CHECK FOR GROUND COLLISION
     {
 
         if (!jumpDown)
         {
-            Debug.Log("Jump");
-
+            
             if(!isJumping)
             {
                 // WALL JUMP
                 if (currentState == ePlayerControlState.CLIMBING)
                 {
-                    am.PlaySFX(eSFX.jumping);
                     Debug.Log("Climbing Jump");
+                    am.PlaySFX(eSFX.jumping);
+
                     isJumping = true;
                     rb.useGravity = true;
                     currentState = ePlayerControlState.JUMPING;
@@ -968,8 +968,9 @@ public class sCharacterController : MonoBehaviour
                 //REGULAR WALK JUMP
                 else if (currentState == ePlayerControlState.WALKING)
                 {
-                    am.PlaySFX(eSFX.jumping);
                     Debug.Log("Walking Jump");
+                    am.PlaySFX(eSFX.jumping);
+                  
                     isJumping = true;
                     rb.useGravity = true;
                     currentState = ePlayerControlState.JUMPING;
@@ -1244,7 +1245,7 @@ public class sCharacterController : MonoBehaviour
         {
             if (currentState != ePlayerControlState.CLIMBING)
             {
-                am.PlaySFX(eSFX.umbrellaUp);
+               am.PlaySFX(eSFX.umbrellaUp);
 
                 umbrella.SetActive(true);
 
@@ -1346,7 +1347,7 @@ public class sCharacterController : MonoBehaviour
 
     void RockPickUp()
     {
-        //am.PlaySFX(eSFX.rockPickup);
+        am.PlaySFX(eSFX.rockPickup);
 
         rockPickupJoint = gameObject.AddComponent<FixedJoint>();
         rockPickupJoint.connectedBody = rockToPickup.GetComponent<Rigidbody>();
@@ -1388,7 +1389,7 @@ public class sCharacterController : MonoBehaviour
             isPausing = true;
             Time.timeScale = 0;
             pauseObject = Instantiate(pPauseMenu, cHUD.transform);
-            //am.PlayUIAudio(eUIaudio.pauseOn);
+            am.PlayUIAudio(eUIaudio.pauseOn);
 
         }
 
