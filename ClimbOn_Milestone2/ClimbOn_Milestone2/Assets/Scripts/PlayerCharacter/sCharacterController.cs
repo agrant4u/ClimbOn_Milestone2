@@ -24,10 +24,12 @@ public class sCharacterController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5f;
     float startingWalkSpeed;
 
-    public float dashSpeed = 10f;
-    int dashTime;
-    public int dashCooldownTime = 5;
+    float dashSpeed = 0.04f;
+    float dashTime = 0.25f;
+    public int dashCooldownTime = 2;
     bool isDashing;
+    Vector3 dashMovement;
+    public float dashStaminaReductionAmount = 20f;
 
     public float sprintMultiplier = 2f;
 
@@ -183,8 +185,6 @@ public class sCharacterController : MonoBehaviour
 
         controller = new PlayerControls();
 
-        //freeLookCam = camController.GetComponent<CinemachineFreeLook>();
-        // SET CAM ORBITS?
         animController = masterPlayer.GetComponent<Animator>();
         SetAnimatorSpeed(animatorSpeed);
 
@@ -257,7 +257,6 @@ public class sCharacterController : MonoBehaviour
     }
 
     // SETS ANIMATION SPEED
-
     void SetAnimatorSpeed(float _speed)
     {
         animController.speed = _speed;
@@ -298,12 +297,8 @@ public class sCharacterController : MonoBehaviour
             {
                 rockToPickup = collision.gameObject;
                 canPickupRock = true;
-            }
-            
-
+            }        
         }
-        
-
     }
 
     // CHARACTER COLLISION EXIT!
@@ -467,126 +462,6 @@ public class sCharacterController : MonoBehaviour
             rb.useGravity = true;
         }
 
-
-    }
-
-    void MantleCheck()
-    {
-        
-
-        //Quaternion shoulderRot;
-
-        //float rotSpeed = 10f;
-
-        //Vector3 mantlePos;
-        //FIRST CHECKS FOR A HIT AT WAIST LEVEL
-        RaycastHit frontHit;
-
-        if (Physics.Raycast(transform.position, Vector3.forward, out frontHit, 1.02f))
-
-        {
-            Debug.Log("Raycast Hit at chest level");
-            Debug.DrawRay(transform.position, Vector3.forward, Color.red);
-
-            RaycastHit hit1;
-
-            // CHECKS FOR HIT ABOVE AND IN FRONT OF CHARACTER
-            if (Physics.Raycast(transform.position,
-                             Vector3.up + Vector3.forward,
-                             out hit1, 1.02f))
-            {
-                Debug.DrawRay(transform.position, Vector3.up + Vector3.forward, Color.cyan);
-                Debug.Log("Raycast Hit Ledge");
-
-                Vector3 mantleOffset = new Vector3(0, 1.5f, 0);
-                RaycastHit hit2;
-
-                // CHECKS FOR HIT ABOVE AND IN FRONT OF CHARACTER FOR LEDGE TO GRAB
-                if (Physics.Raycast(transform.position + mantleOffset,
-                                 Vector3.forward,
-                                 out hit2, 1.02f))
-                {
-                    Debug.DrawRay(transform.position + mantleOffset, Vector3.forward, Color.red);
-                    Debug.Log("Raycast Hit spot to mantle to");
-
-                    // HIT AT SPOT which means character can't mantle cause theres a wall
-                    canMantle = false;
-
-
-                }
-
-                else
-                {
-
-                    //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
-                    canMantle = true;
-
-                    //shoulderRot = new Quaternion(150, 0, 0, 0);
-
-                    //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation,shoulderRot, Time.deltaTime * rotSpeed);
-                    //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
-
-                    // CHECKS FOR MANTLE INPUT HERE
-                    if (attempingMantle && !holdingRock && !canPickupRock)
-                    {
-                        Debug.Log("Mantle attempt!");
-                        //MantleMove(mantlePos);
-                    }
-                }
-
-            }
-
-
-            else
-            {
-                //mantlePos = Vector3.forward + Vector3.up;
-
-                //shoulderRot = new Quaternion(190, 0, 0, 0);
-
-                //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
-                //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
-
-
-                //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
-
-                if (attempingMantle && !holdingRock && !canPickupRock)
-                {
-                    Debug.Log("Mantle attempt!");
-                    //MantleMove(mantlePos);
-                }
-
-            }
-
-        }     
-
-    }
-
-    IEnumerator MantleMovement()
-    {
-        int countDown = 2;   
-
-            for (int i = 0; i < countDown; i++)
-            {
-                Debug.Log("Mantle Start");
-            
-                
-
-                yield return new WaitForSeconds(1);
-            }
-
-            Debug.Log("Player has mantled!");
-            
-        
-    }
-
-    void MantleMove(Vector3 _spotToMove)
-    {
-
-        am.PlaySFX(eSFX.mantle);
-        Vector3 offset = new Vector3(0, 1.5f, 0);
-            Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
-            transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
- 
 
     }
 
@@ -1007,6 +882,7 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+    // LETS PLAYER MOVE WHILE JUMPING IN AIR
     void JumpMovement(Vector3 _moveDirection)
     {
 
@@ -1016,13 +892,9 @@ public class sCharacterController : MonoBehaviour
             transform.forward = _moveDirection * walkSpeed;
 
         }
-
-    } // LETS PLAYER MOVE WHILE JUMPING IN AIR
-
-    
+    } 
 
     // DASH STUFF!
-
     void DashRoll()
     {
 
@@ -1042,50 +914,55 @@ public class sCharacterController : MonoBehaviour
         
     }
 
-    
     IEnumerator DashMovement(ePlayerControlState _state, Vector2 _input)
     {
+
         float counter = 0;
+
+        StaminaChange(-dashStaminaReductionAmount);
 
         switch(_state)
             {
                 case ePlayerControlState.CLIMBING:
-                    
-                    while (counter < dashTime)
 
-                        {
+                dashMovement = new Vector3(_input.x, _input.y, 0);
 
-                        transform.position = Vector3.Lerp(transform.position, transform.position * _input, (counter / dashTime));
+                break;
 
-                        counter += Time.deltaTime;
-
-                    yield return null;
-
-                        }
-                    
-                    DashCoolDown();
-
-                    break;
-                case ePlayerControlState.WALKING:
+            case ePlayerControlState.WALKING:
                 case ePlayerControlState.JUMPING:
                 case ePlayerControlState.OVERHANGING:
                 case ePlayerControlState.FALLING:
-                    
-                    
 
-                    DashCoolDown();
+                dashMovement = new Vector3(_input.x, 0, _input.y);
 
-                    break;
+                break;
             }
+
+      
+
+        while (counter < dashTime)
+
+        {
+
+            
+
+            rb.position = Vector3.Lerp(rb.position, (rb.position + dashMovement), (counter / dashTime));
+
+            counter += Time.deltaTime;
+
+            yield return null;
+
+        }
+
+        StartCoroutine(DashCoolDown());
 
     }
 
-
-    
     IEnumerator DashCoolDown()
         {
 
-            dashCooldownTime = 3;
+        Debug.Log("Cooling Down Dash");
 
             // DASH COOLDOWN
             for (int i = 0; i < dashCooldownTime; i++)
@@ -1094,8 +971,10 @@ public class sCharacterController : MonoBehaviour
             }
 
         isDashing = false;
-        }
 
+        Debug.Log("You Can now dash again!");
+
+        }
 
     // POWERUPS
 
@@ -1134,7 +1013,6 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-
     // NOT USING THIS?
     public void StaminaBuff(float _time)
     {
@@ -1142,7 +1020,6 @@ public class sCharacterController : MonoBehaviour
 
 
     }
-
 
     // GRAPPLE GUN STUFF
 
@@ -1169,20 +1046,24 @@ public class sCharacterController : MonoBehaviour
             else
             {
 
-                grappleGunBehavior.StopGrapple();
+               
 
             }
         }
         
         else
+
         {
-            
-            isGrappling = false;
+
+            if (isGrappling)
+            {
+                grappleGunBehavior.StopGrapple();
+                isGrappling = false;
+            }
         }
+           
 
     }
-
-
 
     public void GrapplePull()
     {
@@ -1333,7 +1214,6 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-
     // PAUSE MENU
 
     void PauseMenu()
@@ -1387,8 +1267,6 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-
-
     // NEESD IMPLEMENTATION
     private bool isFacingWall()
     {
@@ -1438,5 +1316,124 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+    void MantleCheck()
+    {
+
+
+        //Quaternion shoulderRot;
+
+        //float rotSpeed = 10f;
+
+        //Vector3 mantlePos;
+        //FIRST CHECKS FOR A HIT AT WAIST LEVEL
+        RaycastHit frontHit;
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out frontHit, 1.02f))
+
+        {
+            Debug.Log("Raycast Hit at chest level");
+            Debug.DrawRay(transform.position, Vector3.forward, Color.red);
+
+            RaycastHit hit1;
+
+            // CHECKS FOR HIT ABOVE AND IN FRONT OF CHARACTER
+            if (Physics.Raycast(transform.position,
+                             Vector3.up + Vector3.forward,
+                             out hit1, 1.02f))
+            {
+                Debug.DrawRay(transform.position, Vector3.up + Vector3.forward, Color.cyan);
+                Debug.Log("Raycast Hit Ledge");
+
+                Vector3 mantleOffset = new Vector3(0, 1.5f, 0);
+                RaycastHit hit2;
+
+                // CHECKS FOR HIT ABOVE AND IN FRONT OF CHARACTER FOR LEDGE TO GRAB
+                if (Physics.Raycast(transform.position + mantleOffset,
+                                 Vector3.forward,
+                                 out hit2, 1.02f))
+                {
+                    Debug.DrawRay(transform.position + mantleOffset, Vector3.forward, Color.red);
+                    Debug.Log("Raycast Hit spot to mantle to");
+
+                    // HIT AT SPOT which means character can't mantle cause theres a wall
+                    canMantle = false;
+
+
+                }
+
+                else
+                {
+
+                    //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
+                    canMantle = true;
+
+                    //shoulderRot = new Quaternion(150, 0, 0, 0);
+
+                    //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation,shoulderRot, Time.deltaTime * rotSpeed);
+                    //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+
+                    // CHECKS FOR MANTLE INPUT HERE
+                    if (attempingMantle && !holdingRock && !canPickupRock)
+                    {
+                        Debug.Log("Mantle attempt!");
+                        //MantleMove(mantlePos);
+                    }
+                }
+
+            }
+
+
+            else
+            {
+                //mantlePos = Vector3.forward + Vector3.up;
+
+                //shoulderRot = new Quaternion(190, 0, 0, 0);
+
+                //shoulderL.transform.localRotation = Quaternion.Slerp(shoulderL.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+                //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
+
+
+                //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
+
+                if (attempingMantle && !holdingRock && !canPickupRock)
+                {
+                    Debug.Log("Mantle attempt!");
+                    //MantleMove(mantlePos);
+                }
+
+            }
+
+        }
+
+    }
+
+    IEnumerator MantleMovement()
+    {
+        int countDown = 2;
+
+        for (int i = 0; i < countDown; i++)
+        {
+            Debug.Log("Mantle Start");
+
+
+
+            yield return new WaitForSeconds(1);
+        }
+
+        Debug.Log("Player has mantled!");
+
+
+    }
+
+    void MantleMove(Vector3 _spotToMove)
+    {
+
+        am.PlaySFX(eSFX.mantle);
+        Vector3 offset = new Vector3(0, 1.5f, 0);
+        Debug.Log("Mantling from " + transform.localPosition + " to " + (_spotToMove + offset));
+        transform.localPosition = Vector3.Lerp(transform.localPosition, _spotToMove + offset, Time.fixedDeltaTime * mantleSpeed);
+
+
+    }
 
 }

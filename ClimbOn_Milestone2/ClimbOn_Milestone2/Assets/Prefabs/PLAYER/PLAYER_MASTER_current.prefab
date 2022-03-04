@@ -228,7 +228,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302075016}
-  m_LocalRotation: {x: -0.018189488, y: -0.0000000023048399, z: -4.1930764e-11, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189488, y: 0.00000003210187, z: 5.840131e-10, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1316,7 +1316,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 664
+  m_VersionIndex: 685
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1981,7 +1981,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 850
+  m_VersionIndex: 871
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2928,7 +2928,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 2
+  m_CollisionDetection: 1
 --- !u!114 &4713583301342408600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,7 +2943,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbSpeed: 8
   walkSpeed: 8
-  dashSpeed: 10
   dashCooldownTime: 5
   sprintMultiplier: 2
   speedBoostTime: 2
