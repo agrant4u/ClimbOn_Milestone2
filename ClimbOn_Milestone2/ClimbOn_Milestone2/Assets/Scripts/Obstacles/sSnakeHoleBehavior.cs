@@ -15,17 +15,17 @@ public class sSnakeHoleBehavior : MonoBehaviour
     Vector3 attackDirection;
     Vector3 offset;
 
-    float attackSpeed = 20f;
+    float attackSpeed = 500f;
 
-    float attackXmin = -6f;
-    float attackYmin = -6f;
-    float attackXmax = 6f;
-    float attackYmax = 6f;
+    //int attackXmin = -6;
+   // int attackYmin = -6;
+   // int attackXmax = 6;
+   // int attackYmax = 6;
 
-    float attackX;
-    float attackY;
+    int attackX;
+    int attackY;
 
-    public float offsetAmount=2;
+    public float offsetAmount=4;
 
     Rigidbody rb;
 
@@ -47,37 +47,78 @@ public class sSnakeHoleBehavior : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Update()
+    {
+        
+        if (hasSnaked && snake)
+        {
+            SnakeBehavior();
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
 
         // COLLISION FOR SNAKE WITH PLAYER
         sCharacterController player;
-        player = collision.gameObject.GetComponent<sCharacterController>();
+        player = other.gameObject.GetComponent<sCharacterController>();
 
         if (player && !hasSnaked)
         {
-
-            //snakeAnimator.SetBool("isSnakeMoving", true);
-
+            hasSnaked = true;
             AudioManager.am.PlaySFX(eSFX.snakeTrigger);
 
-            snake = Instantiate(snakeBody, this.gameObject.transform.position, Quaternion.identity);
-            GetRandomAttackSpot();
-            snake.GetComponent<Rigidbody>().AddForce(attackDirection*attackSpeed - offset);
+            snake = Instantiate(snakeBody, this.gameObject.transform.position - offset, Quaternion.identity);
 
-            //hasSnaked = true;
+        }
 
-            player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * 1000f);
+    }
 
-        }    
+    void SnakeBehavior()
+    {
+
+        switch (snakeType)
+        {
+
+            case eTypeOfSnake.angry:
+
+                GoAngrySnake();
+                break;
+
+            case eTypeOfSnake.anxious:
+
+                GoAnxiousSnake();
+                break;
+
+        }
+
+    }
+
+    void GoAngrySnake()
+    {
+        GetRandomAttackSpot();
+
+        //snakeAnimator.SetBool("isSnakeMoving", true);
+
+        //snake.GetComponent<Rigidbody>().AddForce(attackDirection * attackSpeed - offset);
+
+        snake.GetComponent<Rigidbody>().velocity += attackDirection * attackSpeed;
+
+        //player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * 1000f);
+    }
+
+    void GoAnxiousSnake()
+    {
+
     }
 
     
 
     void GetRandomAttackSpot()
     {
-        attackX = Random.Range(attackXmin, attackXmax);
-        attackY = Random.Range(attackYmin, attackYmax);
+        attackX = Random.Range(-1, 2);
+        attackY = Random.Range(-1, 2);
 
     }
 

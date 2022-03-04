@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 220215642}
   - component: {fileID: 220215641}
   - component: {fileID: 220215640}
+  - component: {fileID: 2130988881276165513}
+  - component: {fileID: 6484698498188436624}
   m_Layer: 0
   m_Name: CamController
   m_TagString: Untagged
@@ -26,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220215639}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.000000014901161}
-  m_LocalPosition: {x: -0.0000008940696, y: 0.99999994, z: 29.999998}
+  m_LocalPosition: {x: 0, y: 0.99999994, z: 29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1230628314}
@@ -66,7 +68,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.4644886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -77,9 +79,9 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 2
-    m_AccelTime: 0.2
-    m_DecelTime: 0.1
+    m_MaxSpeed: 1
+    m_AccelTime: 0.1
+    m_DecelTime: 0.05
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 0
@@ -101,7 +103,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 150
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -155,6 +157,53 @@ MonoBehaviour:
   PlayerIndex: -1
   XYAxis: {fileID: 8145309850014413422, guid: 5b72a63b176eaaf4abc5014f3044c5a8, type: 3}
   ZAxis: {fileID: 0}
+--- !u!114 &2130988881276165513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220215639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 128
+  m_IgnoreTag: Player
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 0
+  m_MaximumEffort: 4
+  m_SmoothingTime: 2
+  m_Damping: 5.2
+  m_DampingWhenOccluded: 5.26
+  m_OptimalTargetDistance: 0
+--- !u!114 &6484698498188436624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220215639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2fba25a5cd15594e8f050a11e386c80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ConfineMode: 0
+  m_BoundingVolume: {fileID: 0}
+  m_BoundingShape2D: {fileID: 0}
+  m_ConfineScreenEdges: 1
+  m_Damping: 0
 --- !u!1 &302075016
 GameObject:
   m_ObjectHideFlags: 3
@@ -179,7 +228,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302075016}
-  m_LocalRotation: {x: -0.018189488, y: 0.000000017203536, z: 3.1297526e-10, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189488, y: -0.0000000023048399, z: -4.1930764e-11, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -223,7 +272,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.4644886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -382,7 +431,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761196557}
-  m_LocalRotation: {x: -0.03632495, y: -0, z: -0, w: 0.99934006}
+  m_LocalRotation: {x: -0.03632495, y: 0.000000014891327, z: 5.4128396e-10, w: 0.99934006}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -426,7 +475,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.4644886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -711,7 +760,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230628312}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.000000014901161, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -755,7 +804,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.4644886, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -790,7 +839,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826181065}
-  m_LocalRotation: {x: -0.018189494, y: 0.000000017514907, z: 3.0730024e-10, w: 0.9998346}
+  m_LocalRotation: {x: -0.018189494, y: 0.000000032413606, z: 5.783448e-10, w: 0.9998346}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1267,7 +1316,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 613
+  m_VersionIndex: 664
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1932,7 +1981,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 799
+  m_VersionIndex: 850
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2386,7 +2435,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1507
+  m_VersionIndex: 1510
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2899,7 +2948,14 @@ MonoBehaviour:
   sprintMultiplier: 2
   speedBoostTime: 2
   jumpForce: 60
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
+  hold:
+    serializedVersion: 2
+    m_Bits: 128
   cameraTarget: {fileID: 6244567723526587954}
+  camController: {fileID: 0}
   currentState: 1
   maxFallVelocity: -30
   maxHitPoints: 100
@@ -2909,8 +2965,6 @@ MonoBehaviour:
   staminaClimbDrainPerSec: 5
   staminaClimbRecoveryPerSec: 2
   mantleSpeed: 10
-  shoulderL: {fileID: 6244567723798316839}
-  shoulderR: {fileID: 6244567723692466106}
   startingPosition: {fileID: 8331281376991702900, guid: b1d8211fee0385d4b861caf8fa62f879, type: 3}
   masterPlayer: {fileID: 8650288276802503496}
   umbrella: {fileID: 1571551342165993509}
@@ -2920,7 +2974,7 @@ MonoBehaviour:
   grappleGun: {fileID: 7707729461080627746}
   isGrappling: 0
   reticle: {fileID: 6424943575965763127}
-  cHUD: {fileID: 0}
+  cHUD: {fileID: 4523900759843120096, guid: 5b1f1a87ece6dfe41bce6a25c7d86670, type: 3}
   pPauseMenu: {fileID: 8570935151132133969, guid: f2a532ae15140c84dab081e51acb2635, type: 3}
 --- !u!1 &6037416060782257970
 GameObject:

@@ -45,10 +45,32 @@ public class sFallingRockBehavior : MonoBehaviour
         {
             AudioManager.am.PlaySFX(eSFX.fallingRockHit);
             //player.gameObject.GetComponent<Rigidbody>().AddForce(rb.velocity * rockFallPower);
-            player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * rockFallPower, ForceMode.Acceleration);
+            //player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * rockFallPower, ForceMode.Acceleration);
 
+            StartCoroutine(PlayerFalling(collision.gameObject));
 
         }
 
     }
+
+
+    IEnumerator PlayerFalling(GameObject _player)
+    {
+        float counter = 0;
+
+        float fallTime = 2;
+
+        while (counter<fallTime)
+        {
+
+            _player.transform.position = Vector3.Lerp(_player.transform.position, _player.transform.position + Vector3.down, (counter / fallTime));
+
+            counter += Time.deltaTime;
+
+            yield return null;
+
+        }
+   
+    }
+
 }

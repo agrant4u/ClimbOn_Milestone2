@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class sGrapplingGun : MonoBehaviour
 {
+    AudioManager am;
 
     public GameObject pPlayer;
     sCharacterController player;
@@ -31,6 +32,7 @@ public class sGrapplingGun : MonoBehaviour
 
     private void Awake()
     {
+        am = AudioManager.am;
 
         player = pPlayer.GetComponent<sCharacterController>();
         lr = GetComponent<LineRenderer>();
@@ -51,11 +53,13 @@ public class sGrapplingGun : MonoBehaviour
             if (Physics.Raycast(gameObject.transform.position, reticle.transform.forward * grappleLengthMultiplier, out hit, maxDistance, whatIsGrappleable))
             {
 
+            am.PlaySFX(eSFX.grappleStart);
+
             Debug.Log("Starting Grapple Hook");
             Debug.DrawRay(gameObject.transform.position, hit.transform.position, Color.blue);
 
             grapplingPoint = hit.point;
-            player.isGrappling = true;
+            //player.isGrappling = true;
 
             joint = player.gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
@@ -76,27 +80,47 @@ public class sGrapplingGun : MonoBehaviour
 
             }
 
+            else
+
+            {
+
+
+            player.isGrappling = false; 
+
+
+            }
+
     }
 
     void DrawRope()
     {
 
-        if (!joint) return;
+        if (sCharacterController.isDead && joint)
+        {
+            Destroy(joint);
+        }
 
+
+        if (!joint)
+        {
+            player.isGrappling = false;
+
+            return;
+        }
+
+            player.isGrappling = true;
         
             lr.SetPosition(0, gunTip.position);
             lr.SetPosition(1, grapplingPoint);
 
         
-
-
     }
 
     public void GrappleRetract()
     {
 
-
         if (joint)
+
         {
 
             StartCoroutine(GrappleMove());
@@ -105,30 +129,15 @@ public class sGrapplingGun : MonoBehaviour
 
     }
 
-    public void StopGrapple()
-    {
-
-        Debug.Log("Stoping Grapple Hook");
-
-        lr.positionCount = 0;
-
-        player.isGrappling = false;
-        
-        Destroy(joint);
-
-    }
-
     IEnumerator GrappleMove()
     {
-
-        
 
         float grappleCounter = 0;
         float grappleTime;
 
-        grappleTime = (grapplingPoint.z - transform.position.z);
+        grappleTime = Vector3.Distance(gunTip.position, grapplingPoint);
 
-        //float grappleSpeed = 30f;
+        float grappleSpeed = 0.1f;
 
         Debug.Log("Grapple Move!");
 
@@ -139,15 +148,27 @@ public class sGrapplingGun : MonoBehaviour
                                                    grapplingPoint,
                                                    (grappleCounter/grappleTime));
 
-                grappleCounter += Time.deltaTime;
+                grappleCounter += Time.fixedDeltaTime + grappleSpeed;
              
-                //player.transform.position = Vector3.MoveTowards(player.transform.position, grapplingPoint, Time.deltaTime * grappleSpeed); 
-                
                 yield return null;
 
             }
 
-        //yield return new WaitForSeconds(0.5f);
+    }
+
+
+    public void StopGrapple()
+    {
+
+        am.PlaySFX(eSFX.grappleStop);
+
+        Debug.Log("Stoping Grapple Hook");
+
+        lr.positionCount = 0;
+
+        player.isGrappling = false;
+
+        Destroy(joint);
 
     }
 

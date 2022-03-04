@@ -38,6 +38,9 @@ public class sCharacterController : MonoBehaviour
 
     bool isOverHanging;
 
+    public LayerMask ground;
+    public LayerMask hold;
+
     public static bool isGettingBucked = false;
 
     [Space]
@@ -47,8 +50,9 @@ public class sCharacterController : MonoBehaviour
     Vector3 cameraPivot;
     Vector3 cameraOffset;
     //[SerializeField] float cameraSensitivity = 5f;
+    
     // CINEMACHINE
-    //public GameObject camController;
+    public GameObject camController;
     //CinemachineFreeLook freeLookCam;
     //public Camera cam;
 
@@ -71,8 +75,6 @@ public class sCharacterController : MonoBehaviour
     public float maxHitPoints = 100; // make static?
     public static float currentHitPoints;
     public float fallKillDistance = 10f;
-    
-
 
     public static bool isDead = false;
 
@@ -97,8 +99,8 @@ public class sCharacterController : MonoBehaviour
     bool canMantle = false;
     bool attempingMantle;
     public float mantleSpeed = 1f;
-    public GameObject shoulderL;
-    public GameObject shoulderR;
+    //public GameObject shoulderL;
+    //public GameObject shoulderR;
 
 
     //public static sCharacterController globalPlayerReference;
@@ -137,6 +139,7 @@ public class sCharacterController : MonoBehaviour
     sGrapplingGun grappleGunBehavior;
     bool isAimingGrapple;
     //bool isRetractingGrapple = false;
+    bool isTryingToGrapple;
     public bool isGrappling;
 
     public GameObject reticle;
@@ -222,6 +225,7 @@ public class sCharacterController : MonoBehaviour
         isOverHanging = false;
         isJumping = false;
         isGrappling = false;
+        isTryingToGrapple = false;
         isAimingGrapple = false;
         attempingMantle = false;
         canPickupRock = false;
@@ -273,6 +277,9 @@ public class sCharacterController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Ground"))
         {
+
+            isJumping = false;
+
             if (rb.velocity.y <= maxFallVelocity)
             {
                 //PlayerDeath();
@@ -349,7 +356,7 @@ public class sCharacterController : MonoBehaviour
 
             if (currentState != ePlayerControlState.FALLING)
             {
-                Debug.Log("Falling Happening from " + rb.velocity.y + " velocity");
+                //Debug.Log("Falling Happening from " + rb.velocity.y + " velocity");
                 currentState = ePlayerControlState.FALLING;
             }
             
@@ -361,22 +368,28 @@ public class sCharacterController : MonoBehaviour
     void GroundCheck()
     {
 
-
-
         // CHECKS FOR HIT DIRECTLY BELOW CHARACTER
         RaycastHit hit;
+
         if (Physics.Raycast(transform.position,
                             Vector3.down,
                             out hit,
-                            1.02f))
+                            1.02f))  // ADD LAYER MASK IN HERE EVENTUALLY FOR GROUND LAYER!
         {
+
+            if (hit.collider.gameObject.CompareTag("Ground"))
+            {
+
+            }
+
             Debug.DrawRay(transform.position, Vector3.down, Color.red);
+
             Debug.Log("Raycast Hit below");
 
             if (isJumping && rb.velocity.y == 0)
             {
 
-                FallCheck();
+                //FallCheck();
 
             }
 
@@ -389,7 +402,9 @@ public class sCharacterController : MonoBehaviour
             }
 
             currentState = ePlayerControlState.WALKING;
-            isJumping = false;
+
+            //isJumping = false;
+
             isOverHanging = false;
         }
 
@@ -403,6 +418,7 @@ public class sCharacterController : MonoBehaviour
         else
         {
 
+            //isJumping = true;
             //currentState = PlayerControlState.FALLING;
 
         }
@@ -428,9 +444,10 @@ public class sCharacterController : MonoBehaviour
 
             //shoulderL.transform.SetPositionAndRotation(shoulderL.transform.position, new Quaternion(0, 180, -180, 0));
             //shoulderR.transform.SetPositionAndRotation(shoulderR.transform.position, new Quaternion(0, 180, -180, 0));
-            
-            shoulderL.transform.rotation = Quaternion.Lerp(shoulderL.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
-            shoulderR.transform.rotation = Quaternion.Lerp(shoulderR.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
+
+
+            //shoulderL.transform.rotation = Quaternion.Lerp(shoulderL.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
+            //shoulderR.transform.rotation = Quaternion.Lerp(shoulderR.transform.rotation, new Quaternion(0, 180, 0, 0), Time.deltaTime * rotSpeed);
 
         }
 
@@ -457,11 +474,11 @@ public class sCharacterController : MonoBehaviour
     {
         
 
-        Quaternion shoulderRot;
+        //Quaternion shoulderRot;
 
-        float rotSpeed = 10f;
+        //float rotSpeed = 10f;
 
-        Vector3 mantlePos;
+        //Vector3 mantlePos;
         //FIRST CHECKS FOR A HIT AT WAIST LEVEL
         RaycastHit frontHit;
 
@@ -501,7 +518,7 @@ public class sCharacterController : MonoBehaviour
                 else
                 {
 
-                    mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
+                    //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z) + mantleOffset;
                     canMantle = true;
 
                     //shoulderRot = new Quaternion(150, 0, 0, 0);
@@ -513,7 +530,7 @@ public class sCharacterController : MonoBehaviour
                     if (attempingMantle && !holdingRock && !canPickupRock)
                     {
                         Debug.Log("Mantle attempt!");
-                        MantleMove(mantlePos);
+                        //MantleMove(mantlePos);
                     }
                 }
 
@@ -530,12 +547,12 @@ public class sCharacterController : MonoBehaviour
                 //shoulderR.transform.localRotation = Quaternion.Slerp(shoulderR.transform.localRotation, shoulderRot, Time.deltaTime * rotSpeed);
 
 
-                mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
+                //mantlePos = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
 
                 if (attempingMantle && !holdingRock && !canPickupRock)
                 {
                     Debug.Log("Mantle attempt!");
-                    MantleMove(mantlePos);
+                    //MantleMove(mantlePos);
                 }
 
             }
@@ -623,7 +640,7 @@ public class sCharacterController : MonoBehaviour
                 }
             case ePlayerControlState.JUMPING:
                 {
-
+                    //isJumping = true;
                     JumpMovement(walkDirection);
                     break;
                 }
@@ -646,14 +663,14 @@ public class sCharacterController : MonoBehaviour
         //rb.useGravity = currentState != PlayerControlState.CLIMBING;
 
         // RESET INPUT
-        jumpDown = false;
+        //jumpDown = false;
 
     }
 
     void ClimbingMovement(Vector2 _input)
     {
 
-        isJumping = false;
+        //isJumping = false;
 
         float totalClimbSpeed = climbSpeed;
 
@@ -858,6 +875,8 @@ public class sCharacterController : MonoBehaviour
     {
         Debug.Log("Walking happening");
 
+        //isJumping = false;
+
         animController.SetBool("isClimbing", false);
         animController.SetBool("isFalling", false);
 
@@ -926,6 +945,7 @@ public class sCharacterController : MonoBehaviour
 
         }
 
+        /*
         if (jumpDown && Physics.Raycast(transform.position,
                                         transform.forward*0.8f))
         {
@@ -935,6 +955,7 @@ public class sCharacterController : MonoBehaviour
             currentState = ePlayerControlState.CLIMBING;
             animController.SetBool("isClimbing", true);
         }
+        */
 
     }
 
@@ -999,6 +1020,9 @@ public class sCharacterController : MonoBehaviour
     } // LETS PLAYER MOVE WHILE JUMPING IN AIR
 
     
+
+    // DASH STUFF!
+
     void DashRoll()
     {
 
@@ -1007,24 +1031,38 @@ public class sCharacterController : MonoBehaviour
 
             Debug.Log("Dashing!");
 
-            isDashing = true;
+            isDashing = !isDashing;
+
             Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
 
             am.PlaySFX(eSFX.dash);
 
-            StartCoroutine(DashMovement(currentState));
+            StartCoroutine(DashMovement(currentState, input));
         }
         
     }
 
     
-    IEnumerator DashMovement(ePlayerControlState _state)
+    IEnumerator DashMovement(ePlayerControlState _state, Vector2 _input)
     {
+        float counter = 0;
 
         switch(_state)
             {
                 case ePlayerControlState.CLIMBING:
+                    
+                    while (counter < dashTime)
 
+                        {
+
+                        transform.position = Vector3.Lerp(transform.position, transform.position * _input, (counter / dashTime));
+
+                        counter += Time.deltaTime;
+
+                    yield return null;
+
+                        }
+                    
                     DashCoolDown();
 
                     break;
@@ -1032,31 +1070,16 @@ public class sCharacterController : MonoBehaviour
                 case ePlayerControlState.JUMPING:
                 case ePlayerControlState.OVERHANGING:
                 case ePlayerControlState.FALLING:
+                    
+                    
 
                     DashCoolDown();
 
                     break;
             }
 
-        float counter = 0;
-
-            Debug.Log("Dash cooling down");
-
-            while (counter<dashCooldownTime)
-            {
-
-                //gameObject.transform.position += 
-                counter += Time.deltaTime;
-                yield return null;
-
-            }
-
-     
-
-        Debug.Log("You can now dash again!");
-        isDashing = false;
-
     }
+
 
     
     IEnumerator DashCoolDown()
@@ -1069,30 +1092,12 @@ public class sCharacterController : MonoBehaviour
             {
                 yield return new WaitForSeconds(1);
             }
+
+        isDashing = false;
         }
 
-        
 
-    // NEESD IMPLEMENTATION
-    private bool isFacingWall()
-    {
-        //TODO: set angle threshold on wall facing
-
-        RaycastHit hitInfo1, hitInfo2;
-        LayerMask mask = LayerMask.GetMask("Default");
-
-        //hard coding radius and player half height
-        //cast at eye level
-        Physics.SphereCast(transform.position + new Vector3(0, 0.25f, 0), 0.35f, transform.forward, out hitInfo1,
-            0.5f, mask.value, QueryTriggerInteraction.Ignore);
-
-        //cast at waist level
-        Physics.SphereCast(transform.position, 0.35f, Vector3.down, out hitInfo2,
-            0.5f, mask.value, QueryTriggerInteraction.Ignore);
-
-        return (hitInfo1.collider != null || hitInfo2.collider != null);
-
-    }
+    // POWERUPS
 
     public void SpeedBurst(float _boostAmount, float _boostTime)
     {
@@ -1104,31 +1109,20 @@ public class sCharacterController : MonoBehaviour
         climbSpeed += _boostAmount;
         walkSpeed += _boostAmount;
 
-        StartCoroutine(SpeedUp(_boostTime));
+        StartCoroutine(SpeedUp(_boostTime, _boostAmount));
 
     }
 
-    IEnumerator SpeedUp(float _time)
+    IEnumerator SpeedUp(float _time, float _boostAmount)
     {
 
         Debug.Log("Speed Boost Happening!");
 
         yield return new WaitForSeconds(_time);  
 
-        SpeedUpEnd();
-
-    }
-
-    void SpeedUpEnd()
-    {
-
-
         Debug.Log("Speed Boost Off!");
-
-
-        climbSpeed = startingClimbSpeed;
-        walkSpeed = startingWalkSpeed;
-
+        climbSpeed -= _boostAmount;
+        walkSpeed -= _boostAmount;
 
     }
 
@@ -1140,6 +1134,8 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+
+    // NOT USING THIS?
     public void StaminaBuff(float _time)
     {
 
@@ -1147,37 +1143,40 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+
+    // GRAPPLE GUN STUFF
+
     void GrappleShoot()
     {
+
+        isTryingToGrapple = !isTryingToGrapple;
+
         // FLIPS THE BOOL FOR PRESS AND RELEASE.  STARTS AS FALSE SO FIRST PRESS WITLL MAKE IT TRUE.
         //isGrappling = !isGrappling;
 
-        if (!holdingRock)
+        if (!holdingRock && isTryingToGrapple)
         {
 
-            if (isGrappling == false)
+            if (!isGrappling)
             {
 
                 animController.SetBool("isFalling", false);
 
-                am.PlaySFX(eSFX.grappleStart);
                 grappleGunBehavior.StartGrapple();
-
 
             }
 
             else
             {
 
-                am.PlaySFX(eSFX.grappleStop);
                 grappleGunBehavior.StopGrapple();
-
 
             }
         }
         
         else
         {
+            
             isGrappling = false;
         }
 
@@ -1191,12 +1190,14 @@ public class sCharacterController : MonoBehaviour
         if (isGrappling)
         {
             am.PlaySFX(eSFX.grapplePull);
-            isJumping = false;
+            //isJumping = false;
             grappleGun.GetComponent<sGrapplingGun>().GrappleRetract();
 
         }
 
     }
+
+    // RETICLE - for aiming grapple
 
     void ReticleUpdate()
     {
@@ -1233,6 +1234,8 @@ public class sCharacterController : MonoBehaviour
         }
 
     }
+
+    // FLYING UMBRELLA STUFF
 
     void ToggleUmbrella()
     {
@@ -1272,6 +1275,8 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+    // INTERACTIVE ROCK STUFF
+
     void GrabMaster()
     {
 
@@ -1281,7 +1286,7 @@ public class sCharacterController : MonoBehaviour
             RockThrow();
         }
 
-        else if(canPickupRock && !sCharacterController.isHoldingVine)
+        else if (canPickupRock && !sCharacterController.isHoldingVine)
         {
             RockPickUp();
         }
@@ -1309,34 +1314,6 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    public void VineHold(GameObject _vine)
-    {
-        
-        vineHeld = _vine;
-        
-        currentState = ePlayerControlState.VINEHANG;
-
-        Debug.Log("Grabbing Vine");
-
-    }
-
-    void VineHang()
-    {
-
-        Debug.Log("Stil Holding Vine");
-
-        //Vector2 movement = controller.Gameplay.Movement.ReadValue<Vector2>();
-
-        //transform.position = Vector3.Lerp(transform.forward, vineHeld.transform.position, 0.5f);
-
-        // MOVE ALONG THE VINE
-        //rb.velocity = transform.up * movement.y * climbSpeed + transform.right * movement.x * climbSpeed;
-
-
-    }
-
-
-
     void RockThrow()
     {
         Destroy(rockPickupJoint);
@@ -1356,6 +1333,34 @@ public class sCharacterController : MonoBehaviour
 
     }
 
+
+    // PAUSE MENU
+
+    void PauseMenu()
+    {
+        if (!isPausing)
+        {
+            isPausing = true;
+            Time.timeScale = 0;
+            pauseObject = Instantiate(pPauseMenu, cHUD.transform);
+            am.PlayUIAudio(eUIaudio.pauseOn);
+
+        }
+
+        else
+        {
+
+            isPausing = false;
+            Time.timeScale = 1;
+            //am.PlayUIAudio(eUIaudio.pauseOff);
+            Destroy(pauseObject);
+
+        }
+
+
+    }
+
+    // NOT BEING USED
 
     void CameraUpdate()
     {
@@ -1382,28 +1387,56 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    void PauseMenu()
+
+
+    // NEESD IMPLEMENTATION
+    private bool isFacingWall()
     {
-        if(!isPausing)
-        {
-            isPausing = true;
-            Time.timeScale = 0;
-            pauseObject = Instantiate(pPauseMenu, cHUD.transform);
-            am.PlayUIAudio(eUIaudio.pauseOn);
+        //TODO: set angle threshold on wall facing
 
-        }
+        RaycastHit hitInfo1, hitInfo2;
+        LayerMask mask = LayerMask.GetMask("Default");
 
-        else
-        {
+        //hard coding radius and player half height
+        //cast at eye level
+        Physics.SphereCast(transform.position + new Vector3(0, 0.25f, 0), 0.35f, transform.forward, out hitInfo1,
+            0.5f, mask.value, QueryTriggerInteraction.Ignore);
 
-            isPausing = false;
-            Time.timeScale = 1;
-            //am.PlayUIAudio(eUIaudio.pauseOff);
-            Destroy(pauseObject);
+        //cast at waist level
+        Physics.SphereCast(transform.position, 0.35f, Vector3.down, out hitInfo2,
+            0.5f, mask.value, QueryTriggerInteraction.Ignore);
 
-        }
+        return (hitInfo1.collider != null || hitInfo2.collider != null);
+
+    }
+
+    // FUCK THIS STUPID VINE
+
+    void VineHang()
+    {
+
+        Debug.Log("Stil Holding Vine");
+
+        //Vector2 movement = controller.Gameplay.Movement.ReadValue<Vector2>();
+
+        //transform.position = Vector3.Lerp(transform.forward, vineHeld.transform.position, 0.5f);
+
+        // MOVE ALONG THE VINE
+        //rb.velocity = transform.up * movement.y * climbSpeed + transform.right * movement.x * climbSpeed;
 
 
     }
+
+    public void VineHold(GameObject _vine)
+    {
+
+        vineHeld = _vine;
+
+        currentState = ePlayerControlState.VINEHANG;
+
+        Debug.Log("Grabbing Vine");
+
+    }
+
 
 }
