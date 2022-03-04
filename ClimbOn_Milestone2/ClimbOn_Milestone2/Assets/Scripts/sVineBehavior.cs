@@ -32,10 +32,11 @@ public class sVineBehavior : MonoBehaviour
             {
                 sCharacterController.isHoldingVine = true;
 
-                player.VineHold(this.gameObject);
+                //player.VineHold(this.gameObject);
 
-                vineJoint = gameObject.AddComponent<FixedJoint>();
-                vineJoint.connectedBody = collision.gameObject.GetComponent<Rigidbody>();
+                //vineJoint = gameObject.AddComponent<FixedJoint>();
+                //vineJoint.autoConfigureConnectedAnchor = false;
+                //vineJoint.connectedAnchor = collision.gameObject.transform.position;
 
             }
 
