@@ -1132,3 +1132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cOptions: {fileID: 3574228920901167956, guid: 240381e9cb1120e4098dd72634fd1806, type: 3}
   panelOptions: {fileID: 0}
+  pauseFirstButton: {fileID: 0}
+  menuOptionsFirstButton: {fileID: 0}
+  menuOptionsCloseButton: {fileID: 345743302274113802}
+  mainMenuFirstButton: {fileID: 0}
