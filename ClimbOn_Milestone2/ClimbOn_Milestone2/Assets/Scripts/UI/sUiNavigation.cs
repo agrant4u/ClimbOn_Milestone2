@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class sUiNavigation : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class sUiNavigation : MonoBehaviour
 
     GameManager gm;
 
+    public GameObject pauseFirstButton, menuOptionsFirstButton, menuOptionsCloseButton,mainMenuFirstButton;
 
     private void Start()
     {
@@ -32,6 +34,10 @@ public class sUiNavigation : MonoBehaviour
     {
 
         Instantiate(cOptions, panelOptions.transform);
+        //clears the selected object
+        EventSystem.current.SetSelectedGameObject(null);
+        //set new selected object
+        EventSystem.current.SetSelectedGameObject(menuOptionsFirstButton);
         Debug.Log("Options here!");
 
     }
