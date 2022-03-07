@@ -64,7 +64,7 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //GameObject player;
+        
         
         if (other.gameObject.CompareTag("Player"))
         {
@@ -82,6 +82,7 @@ public class Turret : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Turret.isInRange = true;
+            gun.Fire();
 
             Debug.Log("Player is in Range");
         }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1510824644512605013}
   - component: {fileID: 2546887393560718576}
   - component: {fileID: 341336644999944250}
+  - component: {fileID: -6562057953827155984}
   m_Layer: 0
   m_Name: ledge_right
   m_TagString: Untagged
@@ -82,3 +83,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-6562057953827155984
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2286799119737698799}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3881249497932858988, guid: e8197f238fef1d6478de5aea0a41276e, type: 3}

@@ -6,30 +6,67 @@ using UnityEngine.ParticleSystemJobs;
 public class MushroomCloud : MonoBehaviour
 {
 
-    
     public ParticleSystem mushroomCloud;
     public sCharacterController characterController;
 
-    public void ActivateMushroom()
-    {
+    public static bool isInRange;
+    public int playerTimeInCloud;
+    
 
+
+    private void Start()
+    {
+        playerTimeInCloud = 0;
+    }
+
+    private void OnCollisionEnter(Collision player)
+    {
         
-        //if the master player transform is within activation range, activate the emission of particles, when player leaves, stop emissions.
-        if (characterController.masterPlayer.transform)
+        if (player.gameObject.CompareTag("Player"))
         {
-            //enable particles
-        }
-        else
-        {
-            //disable particles
+            MushroomCloud.isInRange = true;
+            mushroomCloud.Play();
+            
+            Debug.Log("Player is in Range of mushroom cloud");
         }
     }
+
+    private void OnTriggerStay(Collider collision)
+    {
+        
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            MushroomCloud.isInRange = true;
+            mushroomCloud.Play();
+
+            Debug.Log("Player is in Range of mushroom cloud");
+        }
+    }
+
+    
 
     private void OnParticleCollision(GameObject other)
     {
-
-        //deals damage to player
+        
+        
+        if (playerTimeInCloud == 5)
+        {
+            //StartCoroutine(mushroomEffect);
+            //this will kill player
+        }
+        //if playerTimeInCloud <= 5, then have the player time in cloud be reset to 0
+        
+            //
+        
+        //StopCoroutine(mushroomEffect);
     }
 
+    IEnumerator mushroomEffect()
+    {
+        int playerLife;
+        playerLife = 0;
+        return null;
+    }
 
+    
 }
