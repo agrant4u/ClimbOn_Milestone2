@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3648956275930909358}
   - component: {fileID: 1533270268621602404}
   - component: {fileID: -3437997763789245239}
+  - component: {fileID: -9211272989380425930}
   m_Layer: 0
   m_Name: rocks_floating_set_3
   m_TagString: Untagged
@@ -97,3 +98,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slip: 20
   currentSlowDownState: 0
+--- !u!64 &-9211272989380425930
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028994860762537905}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2894152120802777609, guid: a43bdade86a35674ba0d898ac34c04af, type: 3}
