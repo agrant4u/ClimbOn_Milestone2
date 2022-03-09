@@ -27,10 +27,15 @@ public class Shot : MonoBehaviour
         rb.MovePosition(rb.position + displacement);
     }
 
-    /*void OnCollisionEnter(Collision other)
+    void OnCollisionEnter(Collision other)
     {
-        var hitEffect = Instantiate(hitPrefab, other.GetContact(0).point, Quaternion.identity);
-        Destroy(hitEffect, 5f);
+        //var hitEffect = Instantiate(hitPrefab, other.GetContact(0).point, Quaternion.identity);
+        //Destroy(hitEffect, 5f);
         Destroy(gameObject);
-    }*/
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Floated like a butterfly and stung like a bee");
+        }
+        
+    }
 }

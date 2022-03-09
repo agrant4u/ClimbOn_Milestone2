@@ -45,7 +45,7 @@ public class Mushroom : MonoBehaviour
             Mushroom.isInRangeOfMushroom = false;
             mushroomParticle.Stop();
 
-            Debug.Log("Player is in Range of mushroom cloud");
+            Debug.Log("Player is not in Range of mushroom cloud");
         }
     }
 

@@ -289,6 +289,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3751850210701163410, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4324726554439428926, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -412,6 +416,26 @@ PrefabInstance:
     - target: {fileID: 7338891292452764829, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
       propertyPath: m_Name
       value: uMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389187533928641600, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389187533928641600, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389187533928641600, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389187533928641600, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 135.8131
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389187533928641600, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -284.64
       objectReference: {fileID: 0}
     - target: {fileID: 7776373038356374215, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
       propertyPath: m_AnchorMax.y
@@ -772,6 +796,10 @@ PrefabInstance:
     - target: {fileID: 4305289729304121793, guid: 486c970e250388a479b55ef7894a6ccd, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305289729304121794, guid: 486c970e250388a479b55ef7894a6ccd, type: 3}
+      propertyPath: curScene
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4305289729304121795, guid: 486c970e250388a479b55ef7894a6ccd, type: 3}
       propertyPath: m_RootOrder
