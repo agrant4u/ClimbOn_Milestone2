@@ -24,8 +24,8 @@ public class sUiNavigation : MonoBehaviour
     public void OnPlayButtonPressed()
     {
 
-        gm.LoadScene(eScene.inGame);
-
+         gm.LoadScene(eScene.inGame);
+      //  sLevelManager.Instance.LoadScene(sceneName);
         Destroy(this.gameObject);
 
     }
