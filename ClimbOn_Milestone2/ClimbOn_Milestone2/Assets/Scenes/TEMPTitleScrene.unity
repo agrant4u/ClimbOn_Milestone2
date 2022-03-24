@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2633758410611876054, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2725125669332752556, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -461,6 +465,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8320151652747223604, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9061750865788303533, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -485,7 +493,8 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6521153320004493158, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}
 --- !u!1 &963573447
 GameObject:
@@ -847,6 +856,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486c970e250388a479b55ef7894a6ccd, type: 3}
+--- !u!1 &2124777375 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4305289729304121793, guid: 486c970e250388a479b55ef7894a6ccd, type: 3}
+  m_PrefabInstance: {fileID: 2117432320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2124777378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124777375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1599caa309368d459226272a0224ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _proggressBar: {fileID: 0}
+  loadingScreen: {fileID: 4589554432707218159, guid: a5127db20c196074cacc02c053bca01d, type: 3}
 --- !u!1 &345743302508472437 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 345743302274113802, guid: 55de3fa6d7f96164dbc21ae1d06e2478, type: 3}

@@ -15,7 +15,7 @@ public class sWaypoint1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var canvas = GameObject.Find("Waypoints").transform;
+        var canvas = GameObject.Find("uInGameUI").transform;
 
        waypoint = Instantiate(prefab, canvas);
 
