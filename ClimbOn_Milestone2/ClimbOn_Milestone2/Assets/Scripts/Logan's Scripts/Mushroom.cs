@@ -10,7 +10,7 @@ public class Mushroom : MonoBehaviour
     ParticleSystem mushroomParticle;
     sCharacterController characterController;
     MushroomKillCloud mushroomBehavior;
-    public float playerTimeInCloud = 100;
+    public float playerTimeInCloud = 10;
 
     public static bool isInRangeOfMushroom;
     
@@ -36,6 +36,15 @@ public class Mushroom : MonoBehaviour
             Debug.Log("Player being hit by particles");
             Debug.Log("Player is in Range of mushroom cloud");
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        Mushroom.isInRangeOfMushroom = true;
+        mushroomParticle.Play();
+        StartCoroutine(mushroomEffect());
+        Debug.Log("Player being hit by particles");
+        Debug.Log("Player is in Range of mushroom cloud");
     }
 
     private void OnTriggerExit(Collider collision)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3464116993716558561}
   - component: {fileID: 557566298097292612}
   - component: {fileID: 2330657689484485006}
+  - component: {fileID: 2768676654261145179}
   m_Layer: 0
   m_Name: LooseRock1
   m_TagString: Untagged
@@ -82,3 +83,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2768676654261145179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4276401637572919387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e107e52fd99668d408c6ba41de20b702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockFallForce: 10
+  rockKnockdownForce: 50
+  fallOffset: 0
+  fallTime: 0.25

@@ -1,32 +1,25 @@
-using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEditor;
 
 public class Turret : MonoBehaviour
 {
+
     public Gun gun;
     public MountPoint[] mountPoints;
     public Transform target;
 
-    //my added variables
-    public sCharacterController characterController;
-
-    //public bool inRange;
-    //public GameObject rangeChecker;
-    //public int turretRange = 15;
-
     public static bool isInRange;
 
-    
-    //end of my stuff
-
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        if (!target) return;
-
+        if (!target)
+        {
+            return;
+        }
         var dashLineSize = 2f;
-
         foreach (var mountPoint in mountPoints)
         {
             var hardpoint = mountPoint.transform;
@@ -38,8 +31,10 @@ public class Turret : MonoBehaviour
             Handles.DrawDottedLine(target.position, hardpoint.position + projection, dashLineSize);
 
             // do not draw target indicator when out of angle
-            if (Vector3.Angle(hardpoint.forward, projection) > mountPoint.angleLimit / 2) return;
-
+            if (Vector3.Angle(hardpoint.forward, projection) > mountPoint.angleLimit / 2)
+            {
+                return;
+            }
             // target line
             Handles.color = Color.red;
             Handles.DrawLine(hardpoint.position, hardpoint.position + projection);
@@ -48,42 +43,30 @@ public class Turret : MonoBehaviour
             Handles.color = Color.green;
             Handles.DrawWireArc(hardpoint.position, hardpoint.up, from, mountPoint.angleLimit, projection.magnitude);
             Handles.DrawSolidDisc(hardpoint.position + projection, hardpoint.up, .5f);
-            
-#endif
         }
+#endif
     }
 
-    void Update()
+    private void Update()
     {
-        //my added stuff
-
-
         TurretActivation();
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        
-        
         if (other.gameObject.CompareTag("Player"))
         {
             Turret.isInRange = true;
-            
             Debug.Log("Player is in Range");
         }
-        
     }
 
     private void OnTriggerStay(Collider other)
     {
-        //GameObject player;
-
         if (other.gameObject.CompareTag("Player"))
         {
             Turret.isInRange = true;
             gun.Fire();
-
             Debug.Log("Player is in Range");
         }
     }
@@ -91,15 +74,16 @@ public class Turret : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Turret.isInRange = false;
-        Debug.Log("Object not in Range");
+        Debug.Log("Object no in range");
     }
 
     void TurretActivation()
     {
         // do nothing when no target
-        if (!target) return;
-
-        // aim target
+        if (!target)
+        {
+            return;
+        }
         var aimed = true;
         foreach (var mountPoint in mountPoints)
         {
@@ -107,17 +91,14 @@ public class Turret : MonoBehaviour
             {
                 aimed = false;
             }
-
-
-
         }
-
         // shoot when aimed
         if (aimed)
         {
-            
             gun.Fire();
         }
     }
+
+
 
 }
