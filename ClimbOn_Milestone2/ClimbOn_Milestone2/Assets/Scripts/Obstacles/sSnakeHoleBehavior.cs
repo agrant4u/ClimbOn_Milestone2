@@ -110,7 +110,7 @@ public class sSnakeHoleBehavior : MonoBehaviour
 
         //snake.GetComponent<Rigidbody>().AddForce(attackDirection * attackSpeed - offset);
 
-        snake.GetComponent<Rigidbody>().velocity += attackDirection * attackSpeed;
+        //snake.GetComponent<Rigidbody>().velocity += attackDirection * attackSpeed;
 
         //player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * 1000f);
     }

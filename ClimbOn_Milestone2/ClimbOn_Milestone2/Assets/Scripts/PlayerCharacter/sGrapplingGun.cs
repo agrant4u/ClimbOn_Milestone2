@@ -38,7 +38,6 @@ public class sGrapplingGun : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         playerPos = pPlayer.transform;
         
-
     }
 
 
@@ -85,7 +84,7 @@ public class sGrapplingGun : MonoBehaviour
             {
 
 
-            player.isGrappling = false; 
+            //player.isGrappling = false; 
 
 
             }
