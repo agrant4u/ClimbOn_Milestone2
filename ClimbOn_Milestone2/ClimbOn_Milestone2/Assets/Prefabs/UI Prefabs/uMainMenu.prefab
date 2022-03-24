@@ -1027,6 +1027,7 @@ GameObject:
   - component: {fileID: 1039455141985272850}
   - component: {fileID: 9201437660094883603}
   - component: {fileID: 271303335309004751}
+  - component: {fileID: 6521153320004493158}
   m_Layer: 5
   m_Name: uMainMenu
   m_TagString: Untagged
@@ -1136,3 +1137,18 @@ MonoBehaviour:
   menuOptionsFirstButton: {fileID: 0}
   menuOptionsCloseButton: {fileID: 345743302274113802}
   mainMenuFirstButton: {fileID: 0}
+--- !u!114 &6521153320004493158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338891292452764829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1599caa309368d459226272a0224ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LoaderCanvas: {fileID: 73868701849336317, guid: b0a1f7862392ba64c97eb112c07234b5, type: 3}
+  _proggressBar: {fileID: 0}
+  loadingScreen: {fileID: 5860036848006164145, guid: b0a1f7862392ba64c97eb112c07234b5, type: 3}
