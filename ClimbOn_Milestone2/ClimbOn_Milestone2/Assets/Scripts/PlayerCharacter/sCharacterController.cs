@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
+
 public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE, JUMPING, VINEHANG, QTE }
 
 public class sCharacterController : MonoBehaviour
@@ -24,7 +25,7 @@ public class sCharacterController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5f;
     float startingWalkSpeed;
 
-    float dashSpeed = 0.04f;
+    float dashSpeed = 5f;
     float dashTime = 0.25f;
     public int dashCooldownTime = 2;
     bool isDashing;
@@ -162,6 +163,7 @@ public class sCharacterController : MonoBehaviour
     public GameObject cHUD;
 
     public GameObject pPauseMenu;
+
     GameObject pauseObject;
     public static bool isPausing = false;
 
@@ -945,9 +947,9 @@ public class sCharacterController : MonoBehaviour
 
         {
 
-            
+            rb.velocity = Vector3.Lerp(rb.position, (rb.position + dashMovement)*dashSpeed, (counter / dashTime));
 
-            rb.position = Vector3.Lerp(rb.position, (rb.position + dashMovement), (counter / dashTime));
+            //rb.position = Vector3.Lerp(rb.position, (rb.position + dashMovement), (counter / dashTime));
 
             counter += Time.deltaTime;
 
@@ -1220,9 +1222,13 @@ public class sCharacterController : MonoBehaviour
     {
         if (!isPausing)
         {
+
+            
+
             isPausing = true;
             Time.timeScale = 0;
             pauseObject = Instantiate(pPauseMenu, cHUD.transform);
+
             am.PlayUIAudio(eUIaudio.pauseOn);
 
         }
@@ -1230,13 +1236,20 @@ public class sCharacterController : MonoBehaviour
         else
         {
 
-            isPausing = false;
-            Time.timeScale = 1;
-            //am.PlayUIAudio(eUIaudio.pauseOff);
-            Destroy(pauseObject);
+            UnPause();
 
         }
 
+
+    }
+
+    void UnPause()
+    {
+
+        isPausing = false;
+        Time.timeScale = 1;
+        //am.PlayUIAudio(eUIaudio.pauseOff);
+        Destroy(pauseObject);
 
     }
 
