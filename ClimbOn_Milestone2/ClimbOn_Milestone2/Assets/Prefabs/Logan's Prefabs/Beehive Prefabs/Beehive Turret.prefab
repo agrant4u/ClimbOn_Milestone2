@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7cc848a28f9dcf04f82930b207caa28c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -192,7 +192,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7cc848a28f9dcf04f82930b207caa28c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -397,7 +397,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7cc848a28f9dcf04f82930b207caa28c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -488,10 +488,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3935410558816114999}
-  - component: {fileID: 3935410558816114997}
+  - component: {fileID: 5596745394525711125}
   - component: {fileID: 3935410558816114998}
-  - component: {fileID: 8670459328155031183}
-  - component: {fileID: 2853402519469430430}
   - component: {fileID: 1515472014204563701}
   m_Layer: 0
   m_Name: Beehive Turret
@@ -517,7 +515,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
---- !u!114 &3935410558816114997
+--- !u!114 &5596745394525711125
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -534,10 +532,6 @@ MonoBehaviour:
   - {fileID: 3935410558106026356}
   - {fileID: 3935410558694156474}
   target: {fileID: 0}
-  characterController: {fileID: 0}
-  inRange: 0
-  rangeChecker: {fileID: 0}
-  turretRange: 15
 --- !u!114 &3935410558816114998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,37 +549,6 @@ MonoBehaviour:
   - {fileID: 3935410557954572826}
   - {fileID: 3935410558982344932}
   fireRate: 2
---- !u!114 &8670459328155031183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3935410558816115000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"RangeChecker","value":null,"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
---- !u!114 &2853402519469430430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3935410558816115000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efe58df89b5b74a97a123b5ed2b70422, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: 038bc0aa2c5c7dd4ea96eeb228e391b3, type: 2}
 --- !u!135 &1515472014204563701
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -660,7 +623,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 08f29aea5f11b4440a4ba3bada98037a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -786,7 +749,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 08f29aea5f11b4440a4ba3bada98037a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -21,16 +21,17 @@ public class sVineBehavior : MonoBehaviour
     {
        if (collision.gameObject.CompareTag("Player"))
         {
-            player = collision.gameObject.GetComponent<sCharacterController>();
+            //player = collision.gameObject.GetComponent<sCharacterController>();
 
-            if (sCharacterController.isHoldingVine)
-            {
-                return;
-            }
+            if (player)
+            { }
+            //{
+            //    return;
+            //}
 
             else
             {
-                sCharacterController.isHoldingVine = true;
+                //sCharacterController.isHoldingVine = true;
 
                 //player.VineHold(this.gameObject);
 
@@ -49,7 +50,7 @@ public class sVineBehavior : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            sCharacterController.isHoldingVine = true;
+            //sCharacterController.isHoldingVine = true;
         }
 
        

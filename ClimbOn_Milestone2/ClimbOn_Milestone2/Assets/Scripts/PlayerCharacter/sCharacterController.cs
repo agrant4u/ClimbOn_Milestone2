@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
+
 public enum ePlayerControlState { CLIMBING, WALKING, FALLING, OVERHANGING, LEDGE, JUMPING, VINEHANG, QTE }
 
 public class sCharacterController : MonoBehaviour
@@ -24,8 +25,8 @@ public class sCharacterController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5f;
     float startingWalkSpeed;
 
-    float dashSpeed = 0.04f;
-    float dashTime = 0.25f;
+    public float dashSpeed = 10f;
+    public float dashTime = 0.25f;
     public int dashCooldownTime = 2;
     bool isDashing;
     Vector3 dashMovement;
@@ -54,7 +55,7 @@ public class sCharacterController : MonoBehaviour
     //[SerializeField] float cameraSensitivity = 5f;
     
     // CINEMACHINE
-    public GameObject camController;
+    //public GameObject camController;
     //CinemachineFreeLook freeLookCam;
     //public Camera cam;
 
@@ -116,11 +117,11 @@ public class sCharacterController : MonoBehaviour
     //public Transform[] checkPoints;
     //int checkPointPos;
 
-    public Transform startingPosition;
+    //public Transform startingPosition;
 
     Vector3 currentCheckPointPosition;
 
-    public GameObject masterPlayer;
+    //public GameObject masterPlayer;
 
     [Space]
     [Header("Umbrella")]
@@ -132,8 +133,9 @@ public class sCharacterController : MonoBehaviour
 
     [Space]
     [Header("Animator")]
-    public Animator animController;
-    public float animatorSpeed = 1; // DEFAULT 1
+    Animator animController;
+    float animatorSpeed = 1; // DEFAULT 1
+    public GameObject pModel;
 
     [Space]
     [Header("GrappleGun")]
@@ -144,9 +146,9 @@ public class sCharacterController : MonoBehaviour
     bool isTryingToGrapple;
     public bool isGrappling;
 
-    public GameObject reticle;
-    Vector3 reticleStartingPos;
-    float reticleSensitivity = 5f;
+    //public GameObject reticle;
+    //Vector3 reticleStartingPos;
+    //float reticleSensitivity = 5f;
 
 
     public static int collectiblesHeld = 0;
@@ -162,21 +164,24 @@ public class sCharacterController : MonoBehaviour
     public GameObject cHUD;
 
     public GameObject pPauseMenu;
+
     GameObject pauseObject;
     public static bool isPausing = false;
 
-    public static bool isHoldingVine;
-    GameObject vineHeld;
+    //public static bool isHoldingVine;
+    //GameObject vineHeld;
 
     void Awake()
     {
         am = AudioManager.am;
 
+        rb = GetComponent<Rigidbody>();
+
         // SETS STARTING PLAYER POSITION TO 1st CheckPoint or StartingPoint
-        currentCheckPointPosition = startingPosition.position;
+        //currentCheckPointPosition = startingPosition.position;
         grappleGunBehavior = grappleGun.GetComponent<sGrapplingGun>();
 
-        reticleStartingPos = reticle.transform.localPosition;
+        //reticleStartingPos = reticle.transform.localPosition;
 
         normalGravity = Physics.gravity;
         umbrella.SetActive(false);
@@ -185,7 +190,10 @@ public class sCharacterController : MonoBehaviour
 
         controller = new PlayerControls();
 
-        animController = masterPlayer.GetComponent<Animator>();
+
+        // ANIMATION STUFF HERE
+        animController = pModel.GetComponent<Animator>();
+
         SetAnimatorSpeed(animatorSpeed);
 
         controller.Gameplay.Jump.performed += context => Jump();
@@ -220,7 +228,7 @@ public class sCharacterController : MonoBehaviour
 
     void Start()
     {
-
+        
         //globalPlayerReference = this;
         isOverHanging = false;
         isJumping = false;
@@ -230,11 +238,11 @@ public class sCharacterController : MonoBehaviour
         attempingMantle = false;
         canPickupRock = false;
         isDashing = false;
-        rb = GetComponent<Rigidbody>();
+        
         startingWalkSpeed = walkSpeed;
         currentHitPoints = maxHitPoints;
         currentStamina = maxStamina;
-        sCharacterController.isHoldingVine = false;
+        //sCharacterController.isHoldingVine = false;
 
     }
 
@@ -257,10 +265,12 @@ public class sCharacterController : MonoBehaviour
     }
 
     // SETS ANIMATION SPEED
+    
     void SetAnimatorSpeed(float _speed)
     {
         animController.speed = _speed;
     }
+    
 
     // CHARACTER COLLISON ENTER!
     private void OnCollisionEnter(Collision collision)
@@ -269,6 +279,7 @@ public class sCharacterController : MonoBehaviour
         if (collision.gameObject.CompareTag("Hold"))
         {
 
+            isJumping = false;
             currentState = ePlayerControlState.CLIMBING;
                        
            
@@ -278,12 +289,13 @@ public class sCharacterController : MonoBehaviour
         {
 
             isJumping = false;
+            currentState = ePlayerControlState.WALKING;
 
             if (rb.velocity.y <= maxFallVelocity)
             {
                 //PlayerDeath();
-                //currentState = ePlayerControlState.WALKING;
-                Debug.Log("Ground death triggered from " + rb.velocity.y + " velocity");
+                
+                //Debug.Log("Ground death triggered from " + rb.velocity.y + " velocity");
             }
         }
 
@@ -299,6 +311,12 @@ public class sCharacterController : MonoBehaviour
                 canPickupRock = true;
             }        
         }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+
+
     }
 
     // CHARACTER COLLISION EXIT!
@@ -392,7 +410,7 @@ public class sCharacterController : MonoBehaviour
             {
                 if (rb.velocity.y < maxFallVelocity)
                 {
-                    maxFallVelocity = rb.velocity.y;
+                    //maxFallVelocity = rb.velocity.y;
                 }
             }
 
@@ -400,7 +418,7 @@ public class sCharacterController : MonoBehaviour
 
             //isJumping = false;
 
-            isOverHanging = false;
+            //isOverHanging = false;
         }
 
 
@@ -482,11 +500,14 @@ public class sCharacterController : MonoBehaviour
         Vector2 input = controller.Gameplay.Movement.ReadValue<Vector2>();
         
         //Vector2 camInput = controller.Gameplay.Camera.ReadValue<Vector2>();
+
         Transform cam = Camera.main.transform;
 
         // SWITCHES INPUT TO X/Z Plane for Walking
         Vector3 walkDirection = Quaternion.FromToRotation(cam.up, Vector3.up)
                                 * cam.TransformDirection(new Vector3(input.x, 0f, input.y));
+
+        //Vector3 walkDirection = new Vector3(input.x, 0f, input.y);  // NEW
 
 
         // MOVEMENT STATE TRANSITIONS
@@ -507,28 +528,18 @@ public class sCharacterController : MonoBehaviour
                     ClimbingMovement(input);
                     break;
                 }
-            case ePlayerControlState.OVERHANGING:
-                {
-                    if (isOverHanging)
-                    OverHangMovement(walkDirection);
-                    break;
-                }
+
             case ePlayerControlState.JUMPING:
                 {
                     //isJumping = true;
                     JumpMovement(walkDirection);
                     break;
                 }
-            case ePlayerControlState.VINEHANG:
-            {
-                    VineHang();      
-                break;
-            }
            
         }
 
         GroundCheck();
-        CeilingCheck();
+        //CeilingCheck();
         
         if (isHoldingUmbrella)
         {
@@ -545,14 +556,16 @@ public class sCharacterController : MonoBehaviour
     void ClimbingMovement(Vector2 _input)
     {
 
+        Vector3 totalVelocity;
+
         //isJumping = false;
 
         float totalClimbSpeed = climbSpeed;
 
         Debug.Log("Climbing Happening");
 
-        animController.SetBool("isClimbing", true);
-        animController.SetBool("isFalling", false);
+        //animController.SetBool("isClimbing", true);
+        //animController.SetBool("isFalling", false);
 
         // CHECK WALLS IN A CROSS PATTERN
         Vector3 offset = transform.TransformDirection(Vector2.one * 0.5f);
@@ -622,7 +635,7 @@ public class sCharacterController : MonoBehaviour
             if (isSprinting)
             {
 
-                SetAnimatorSpeed(animatorSpeed * sprintMultiplier);
+                //SetAnimatorSpeed(animatorSpeed * sprintMultiplier);
 
                 if (currentStamina > 0)
                 {
@@ -634,7 +647,7 @@ public class sCharacterController : MonoBehaviour
 
             else
             {
-                SetAnimatorSpeed(animatorSpeed);
+                //SetAnimatorSpeed(animatorSpeed);
                 Debug.Log("Not Sprinting");
                 
                 currentStamina += staminaRecoveryPerSec * Time.deltaTime;
@@ -643,6 +656,9 @@ public class sCharacterController : MonoBehaviour
             }
 
             rb.useGravity = false;
+
+            //totalVelocity = tranew Vector3(_input.x * totalClimbSpeed, _input.y * totalClimbSpeed, 0) 
+
             rb.velocity = transform.up * _input.y * totalClimbSpeed + transform.right * _input.x * totalClimbSpeed;
 
             if (jumpDown)
@@ -659,101 +675,16 @@ public class sCharacterController : MonoBehaviour
         }
     }
 
-    void OverHangMovement(Vector3 _moveDirection)
-    {
 
-        Debug.Log("OverHanging Movement Happening");
-
-        animController.SetBool("isClimbing", false);
-        animController.SetBool("isFalling", false);
-
-        float totalWalkSpeed = walkSpeed;
-
-        rb.useGravity = false;
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, // POSITION
-                            Vector3.up,  // DIRECTION
-                            out hit)) // HIT DATA
-        {
-
-            Debug.DrawRay(transform.position, Vector3.up, Color.blue);
-
-            //float dot = Vector3.Dot(transform.forward, -hit.normal);
-
-
-            // SMOOTHES MOVEMENT ALONG THE WALL TO CURVE AROUND
-            //transform.forward = -hit.normal;
-
-            //rb.position = Vector3.Lerp(rb.position,
-            //                        hit.normal,
-            //                      Time.fixedDeltaTime);
-
-
-            transform.up = Vector3.Lerp(transform.up,
-                                             -hit.normal,
-                                             Time.fixedDeltaTime);
-
-            /* SPRINTING?
-            if (isSprinting)
-            {
-
-
-                if (currentStamina > 0)
-                {
-                    Debug.Log("Sprinting happening");
-                    totalWalkSpeed *= sprintMultiplier;
-                    currentStamina -= staminaDrainPerSec * Time.fixedDeltaTime;
-                }
-            }
-
-            else
-            {
-                Debug.Log("Not Sprinting");
-                currentStamina += staminaRecoveryPerSec * Time.deltaTime;
-                if (currentStamina > maxStamina)
-                    currentStamina = maxStamina;
-            }
-            */
-
-        }
-
-        else
-        {
-            //isOverHanging = false;
-        }
-
-        Vector3 oldVelo = rb.velocity;
-
-        Vector3 newVelo = _moveDirection * totalWalkSpeed;
-        newVelo.y = oldVelo.y;
-
-        if (jumpDown)
-        {
-
-            newVelo.y = 5f;
-            //currentState = PlayerControlState.FALLING;
-        }
-
-        rb.velocity = newVelo;
-
-        if (_moveDirection.sqrMagnitude > 0.01f)
-        {
-
-            transform.forward = _moveDirection;
-
-        }
-
-    }
-
+    // NOT USING THIS ANYMORE
     void WalkingMovement(Vector3 _moveDirection)
     {
         Debug.Log("Walking happening");
 
         //isJumping = false;
 
-        animController.SetBool("isClimbing", false);
-        animController.SetBool("isFalling", false);
+        //animController.SetBool("isClimbing", false);
+        //animController.SetBool("isFalling", false);
 
         MantleCheck();
 
@@ -808,8 +739,8 @@ public class sCharacterController : MonoBehaviour
     {
         Debug.Log("Falling happening");
 
-        animController.SetBool("isClimbing", false);
-        animController.SetBool("isFalling", true);
+        //animController.SetBool("isClimbing", false);
+        //animController.SetBool("isFalling", true);
         
        
 
@@ -925,16 +856,16 @@ public class sCharacterController : MonoBehaviour
             {
                 case ePlayerControlState.CLIMBING:
 
-                dashMovement = new Vector3(_input.x, _input.y, 0);
+                dashMovement = new Vector3(_input.x * dashSpeed, _input.y * dashSpeed, 0);
 
                 break;
 
-            case ePlayerControlState.WALKING:
+                case ePlayerControlState.WALKING:
                 case ePlayerControlState.JUMPING:
                 case ePlayerControlState.OVERHANGING:
                 case ePlayerControlState.FALLING:
 
-                dashMovement = new Vector3(_input.x, 0, _input.y);
+                dashMovement = new Vector3(_input.x * dashSpeed, 0, _input.y * dashSpeed);
 
                 break;
             }
@@ -945,7 +876,7 @@ public class sCharacterController : MonoBehaviour
 
         {
 
-            
+            //rb.velocity = Vector3.Lerp(rb.position, (rb.position + dashMovement), (counter / dashTime));
 
             rb.position = Vector3.Lerp(rb.position, (rb.position + dashMovement), (counter / dashTime));
 
@@ -978,6 +909,8 @@ public class sCharacterController : MonoBehaviour
 
     // POWERUPS
 
+    // SPEED BOOST
+
     public void SpeedBurst(float _boostAmount, float _boostTime)
     {
         am.PlaySFX(eSFX.speedBoost);
@@ -1004,6 +937,8 @@ public class sCharacterController : MonoBehaviour
         walkSpeed -= _boostAmount;
 
     }
+
+    // STAMINA BOOST
 
     public void StaminaChange(float _amount)
     {
@@ -1037,7 +972,7 @@ public class sCharacterController : MonoBehaviour
             if (!isGrappling)
             {
 
-                animController.SetBool("isFalling", false);
+                //animController.SetBool("isFalling", false);
 
                 grappleGunBehavior.StartGrapple();
 
@@ -1085,15 +1020,15 @@ public class sCharacterController : MonoBehaviour
         
         if (isAimingGrapple)
         {
-            reticle.SetActive(true);
+            //reticle.SetActive(true);
 
             Vector2 input = controller.Gameplay.Camera.ReadValue<Vector2>();
             Vector3 movement = new Vector3(input.x, input.y, 0);
             //Quaternion newRot = new Quaternion(input.x, input.y, 0);
-            Vector2 reticleMovement = new Vector2(input.x * reticleSensitivity, input.y * reticleSensitivity);
+            //Vector2 reticleMovement = new Vector2(input.x * reticleSensitivity, input.y * reticleSensitivity);
 
             movement.Normalize();
-            reticleMovement.Normalize();
+            //reticleMovement.Normalize();
 
             //reticle.GetComponent<Rigidbody2D>().MovePosition(reticleMovement);
 
@@ -1104,14 +1039,14 @@ public class sCharacterController : MonoBehaviour
 
             //reticle.transform.RotateAround(cam.transform.position, )
 
-            reticle.transform.localPosition = reticleStartingPos + movement;
+            //reticle.transform.localPosition = reticleStartingPos + movement;
 
             //reticle.transform.rotation = Quaternion.identity;
         }
 
         else
         {
-            reticle.SetActive(false);
+            //reticle.SetActive(false);
         }
 
     }
@@ -1133,7 +1068,7 @@ public class sCharacterController : MonoBehaviour
 
                 umbrella.SetActive(true);
 
-                animController.SetBool("isFalling", false);
+                //animController.SetBool("isFalling", false);
 
 
             }
@@ -1167,30 +1102,9 @@ public class sCharacterController : MonoBehaviour
             RockThrow();
         }
 
-        else if (canPickupRock && !sCharacterController.isHoldingVine)
+        else if (canPickupRock)
         {
             RockPickUp();
-        }
-
-        if (sCharacterController.isHoldingVine && vineHeld)
-        {
-
-            FixedJoint fj;
-            fj = vineHeld.GetComponent<FixedJoint>();
-            Destroy(fj);
-
-            vineHeld = null;
-            sCharacterController.isHoldingVine = false;
-            //rb.AddForce(new Vector3(0, jumpForce, -jumpForce * 2), ForceMode.Impulse);
-            //currentState = ePlayerControlState.JUMPING;
-
-        }
-
-        else
-        {
-
-
-
         }
 
     }
@@ -1220,9 +1134,13 @@ public class sCharacterController : MonoBehaviour
     {
         if (!isPausing)
         {
+
+            
+
             isPausing = true;
             Time.timeScale = 0;
             pauseObject = Instantiate(pPauseMenu, cHUD.transform);
+
             am.PlayUIAudio(eUIaudio.pauseOn);
 
         }
@@ -1230,17 +1148,24 @@ public class sCharacterController : MonoBehaviour
         else
         {
 
-            isPausing = false;
-            Time.timeScale = 1;
-            //am.PlayUIAudio(eUIaudio.pauseOff);
-            Destroy(pauseObject);
+            UnPause();
 
         }
 
 
     }
 
-    // NOT BEING USED
+    void UnPause()
+    {
+
+        isPausing = false;
+        Time.timeScale = 1;
+        //am.PlayUIAudio(eUIaudio.pauseOff);
+        Destroy(pauseObject);
+
+    }
+
+    // NOT BEING USED STUFF BELOW HERE
 
     void CameraUpdate()
     {
@@ -1267,7 +1192,9 @@ public class sCharacterController : MonoBehaviour
 
     }
 
-    // NEESD IMPLEMENTATION
+
+
+    // NEEDS IMPLEMENTATION
     private bool isFacingWall()
     {
         //TODO: set angle threshold on wall facing
@@ -1308,7 +1235,7 @@ public class sCharacterController : MonoBehaviour
     public void VineHold(GameObject _vine)
     {
 
-        vineHeld = _vine;
+        //vineHeld = _vine;
 
         currentState = ePlayerControlState.VINEHANG;
 
@@ -1435,5 +1362,94 @@ public class sCharacterController : MonoBehaviour
 
 
     }
+
+
+    void OverHangMovement(Vector3 _moveDirection)
+    {
+
+        Debug.Log("OverHanging Movement Happening");
+
+        //animController.SetBool("isClimbing", false);
+        //animController.SetBool("isFalling", false);
+
+        float totalWalkSpeed = walkSpeed;
+
+        rb.useGravity = false;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, // POSITION
+                            Vector3.up,  // DIRECTION
+                            out hit)) // HIT DATA
+        {
+
+            Debug.DrawRay(transform.position, Vector3.up, Color.blue);
+
+            //float dot = Vector3.Dot(transform.forward, -hit.normal);
+
+
+            // SMOOTHES MOVEMENT ALONG THE WALL TO CURVE AROUND
+            //transform.forward = -hit.normal;
+
+            //rb.position = Vector3.Lerp(rb.position,
+            //                        hit.normal,
+            //                      Time.fixedDeltaTime);
+
+
+            transform.up = Vector3.Lerp(transform.up,
+                                             -hit.normal,
+                                             Time.fixedDeltaTime);
+
+            /* SPRINTING?
+            if (isSprinting)
+            {
+
+
+                if (currentStamina > 0)
+                {
+                    Debug.Log("Sprinting happening");
+                    totalWalkSpeed *= sprintMultiplier;
+                    currentStamina -= staminaDrainPerSec * Time.fixedDeltaTime;
+                }
+            }
+
+            else
+            {
+                Debug.Log("Not Sprinting");
+                currentStamina += staminaRecoveryPerSec * Time.deltaTime;
+                if (currentStamina > maxStamina)
+                    currentStamina = maxStamina;
+            }
+            */
+
+        }
+
+        else
+        {
+            //isOverHanging = false;
+        }
+
+        Vector3 oldVelo = rb.velocity;
+
+        Vector3 newVelo = _moveDirection * totalWalkSpeed;
+        newVelo.y = oldVelo.y;
+
+        if (jumpDown)
+        {
+
+            newVelo.y = 5f;
+            //currentState = PlayerControlState.FALLING;
+        }
+
+        rb.velocity = newVelo;
+
+        if (_moveDirection.sqrMagnitude > 0.01f)
+        {
+
+            transform.forward = _moveDirection;
+
+        }
+
+    }
+
 
 }

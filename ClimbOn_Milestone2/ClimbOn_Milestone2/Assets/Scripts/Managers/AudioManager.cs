@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
 
     // Awake Refs
     private void Awake()
-    {  
+    {
 
         if (am == null)
         {
@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(eSFX _sfx)
     {
-        Debug.Log("Playing " + sfx[(int)_sfx]);
+       Debug.Log("Playing " + sfx[(int)_sfx]);
        sfxSource.PlayOneShot(sfx[(int)_sfx]);
     }
 

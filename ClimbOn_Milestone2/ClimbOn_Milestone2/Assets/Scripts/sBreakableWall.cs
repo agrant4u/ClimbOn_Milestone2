@@ -20,6 +20,8 @@ public class sBreakableWall : MonoBehaviour
         //Grant's original code
         offset = new Vector3(0, 0, -6.74f);
 
+
+
         //Logan: tried changing the direction of the breakable wall when it instantiates the second wall
         //offset = new Vector3(0, -6.5f, 0);
         //rb = GetComponent<Rigidbody>();
@@ -56,7 +58,8 @@ public class sBreakableWall : MonoBehaviour
 
     void DestroyWall()
     {
-        Instantiate(brokenWall, gameObject.transform.position + offset, Quaternion.identity);
+        Instantiate(brokenWall, gameObject.transform.position + offset, gameObject.transform.rotation);
+        brokenWall.transform.localScale = this.transform.localScale;
         Destroy(this.gameObject);
     }
 

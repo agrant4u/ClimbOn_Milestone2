@@ -24,7 +24,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""caf96dba-5abd-4116-9320-45728e2e3445"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Umbrella"",

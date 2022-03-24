@@ -69,7 +69,7 @@ public class sSnakeHoleBehavior : MonoBehaviour
             hasSnaked = true;
             AudioManager.am.PlaySFX(eSFX.snakeTrigger);
 
-            snake = Instantiate(snakeBody, this.gameObject.transform.position - offset, Quaternion.identity);
+            snake = Instantiate(snakeBody, this.gameObject.transform.position - offset, this.gameObject.transform.rotation);
 
         }
 
@@ -97,13 +97,20 @@ public class sSnakeHoleBehavior : MonoBehaviour
 
     void GoAngrySnake()
     {
-        GetRandomAttackSpot();
+        while(attackX == 0)
+        {
+            GetRandomAttackSpot();
+        }
+       
+        //attackX = Random.Range(-1, 2);
+
+        attackDirection = new Vector3(attackX, 0, 0);
 
         //snakeAnimator.SetBool("isSnakeMoving", true);
 
         //snake.GetComponent<Rigidbody>().AddForce(attackDirection * attackSpeed - offset);
 
-        snake.GetComponent<Rigidbody>().velocity += attackDirection * attackSpeed;
+        //snake.GetComponent<Rigidbody>().velocity += attackDirection * attackSpeed;
 
         //player.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.down * 1000f);
     }
@@ -118,7 +125,7 @@ public class sSnakeHoleBehavior : MonoBehaviour
     void GetRandomAttackSpot()
     {
         attackX = Random.Range(-1, 2);
-        attackY = Random.Range(-1, 2);
+        //attackY = Random.Range(-1, 2);
 
     }
 

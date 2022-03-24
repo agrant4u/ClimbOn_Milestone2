@@ -14,12 +14,20 @@ public class cOptions : MonoBehaviour
     public Slider musicSlider;
     public Slider sfxSlider;
 
+    AudioManager am;
 
     public Dropdown gameResolution;
 
     public static bool hudOn;  // Change this probably
 
     cHUD hud;
+
+    private void Start()
+    {
+
+        am = AudioManager.am;
+
+    }
 
     public void InitUI()
     {
@@ -52,21 +60,21 @@ public class cOptions : MonoBehaviour
     public void OnMusicVolChanged()
     {
         
-        AudioManager.am.ChangeMusicVolume(musicSlider.value);
+        am.ChangeMusicVolume(musicSlider.value);
     }
 
 
     public void OnMasterVolChanged()
     {
 
-        AudioManager.am.ChangeMasterVolume(masterSlider.value);
+        am.ChangeMasterVolume(masterSlider.value);
 
     }
 
     public void OnSFXVolChanged()
     {
 
-        AudioManager.am.ChangeSFXVolume(sfxSlider.value);
+        am.ChangeSFXVolume(sfxSlider.value);
 
     }
 

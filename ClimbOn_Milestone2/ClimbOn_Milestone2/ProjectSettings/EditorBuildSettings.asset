@@ -5,17 +5,20 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/multiPlayer/multiPlayerLoading.unity
     guid: 11e0cf904dc18a7499591185292cf3e4
   - enabled: 0
     path: Assets/Scenes/multiPlayer/multiPlayerLobby.unity
     guid: 397046029e5d0a24894bad505edb64ae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ClimbOn_GRANTO.unity
     guid: d738095f278ed7e4cacc19434a7c9cc6
   - enabled: 1
     path: Assets/Scenes/ClimbOn_3.0 1 - Logan.unity
     guid: 07d15daa22186fd4cbbaaf5cfdfad49c
+  - enabled: 1
+    path: Assets/Scenes/TEMPTitleScrene.unity
+    guid: 6a209f3f8d1b60241acd8fabe0bc2c02
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f0fc34ff5ec1d4845ab7c3658315d9e5, type: 2}

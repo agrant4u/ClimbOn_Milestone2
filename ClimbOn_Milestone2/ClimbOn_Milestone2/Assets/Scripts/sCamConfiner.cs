@@ -30,7 +30,7 @@ public class sCamConfiner : MonoBehaviour
 
             player = other.gameObject.GetComponent<sCharacterController>();
 
-            confiner = player.camController.GetComponent<CinemachineConfiner>();
+            //confiner = player.camController.GetComponent<CinemachineConfiner>();
 
             confiner.m_BoundingVolume = confineTrigger;
 
@@ -51,7 +51,7 @@ public class sCamConfiner : MonoBehaviour
 
             player = other.gameObject.GetComponent<sCharacterController>();
 
-            confiner = player.camController.GetComponent<CinemachineConfiner>();
+            //confiner = player.camController.GetComponent<CinemachineConfiner>();
 
             confiner.m_BoundingVolume = confineTrigger;
 
