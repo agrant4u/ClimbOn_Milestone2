@@ -41,8 +41,8 @@ public class Mushroom : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Mushroom.isInRangeOfMushroom = true;
-        mushroomParticle.Play();
-        StartCoroutine(mushroomEffect());
+        //mushroomParticle.Play();
+        //StartCoroutine(mushroomEffect());
         Debug.Log("Player being hit by particles");
         Debug.Log("Player is in Range of mushroom cloud");
     }
@@ -62,6 +62,7 @@ public class Mushroom : MonoBehaviour
     IEnumerator mushroomEffect()
     {
         float counter = 0;
+
         while (counter < playerTimeInCloud)
         {
             if (Mushroom.isInRangeOfMushroom)
